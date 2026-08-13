@@ -198,7 +198,10 @@ function CategoriesTab({
 
   const remove = async (id: string) => {
     const { error } = await supabase.from("categories").delete().eq("id", id);
-    if (error) return toast.error(error.message);
+    if (error) {
+      toast.error(error.message);
+      return;
+    }
     toast.success("Categoria excluída");
     refresh();
   };
@@ -222,7 +225,10 @@ function CategoriesTab({
       position: categories.length + index,
     }));
     const { error } = await supabase.from("categories").insert(rows);
-    if (error) return toast.error(error.message);
+    if (error) {
+      toast.error(error.message);
+      return;
+    }
     toast.success("Categorias padrão criadas");
     refresh();
   };
@@ -374,14 +380,20 @@ function LinksTab({
     const { error } = await supabase
       .from("links")
       .insert({ ...rest, title: `${link.title} (cópia)`, position: links.length });
-    if (error) return toast.error(error.message);
+    if (error) {
+      toast.error(error.message);
+      return;
+    }
     toast.success("Link duplicado");
     refresh();
   };
 
   const remove = async (id: string) => {
     const { error } = await supabase.from("links").delete().eq("id", id);
-    if (error) return toast.error(error.message);
+    if (error) {
+      toast.error(error.message);
+      return;
+    }
     toast.success("Link excluído");
     refresh();
   };
