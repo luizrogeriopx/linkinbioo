@@ -14,13 +14,187 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      categories: {
+        Row: {
+          created_at: string
+          emoji: string | null
+          id: string
+          image_url: string | null
+          is_active: boolean
+          position: number
+          title: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          emoji?: string | null
+          id?: string
+          image_url?: string | null
+          is_active?: boolean
+          position?: number
+          title: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          emoji?: string | null
+          id?: string
+          image_url?: string | null
+          is_active?: boolean
+          position?: number
+          title?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      link_clicks: {
+        Row: {
+          created_at: string
+          id: string
+          link_id: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          link_id: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          link_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "link_clicks_link_id_fkey"
+            columns: ["link_id"]
+            isOneToOne: false
+            referencedRelation: "links"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      links: {
+        Row: {
+          category_id: string | null
+          click_count: number
+          color: string | null
+          created_at: string
+          description: string | null
+          icon: string | null
+          id: string
+          is_active: boolean
+          is_favorite: boolean
+          is_featured: boolean
+          is_sponsored: boolean
+          position: number
+          title: string
+          updated_at: string
+          url: string
+          user_id: string
+        }
+        Insert: {
+          category_id?: string | null
+          click_count?: number
+          color?: string | null
+          created_at?: string
+          description?: string | null
+          icon?: string | null
+          id?: string
+          is_active?: boolean
+          is_favorite?: boolean
+          is_featured?: boolean
+          is_sponsored?: boolean
+          position?: number
+          title: string
+          updated_at?: string
+          url: string
+          user_id: string
+        }
+        Update: {
+          category_id?: string | null
+          click_count?: number
+          color?: string | null
+          created_at?: string
+          description?: string | null
+          icon?: string | null
+          id?: string
+          is_active?: boolean
+          is_favorite?: boolean
+          is_featured?: boolean
+          is_sponsored?: boolean
+          position?: number
+          title?: string
+          updated_at?: string
+          url?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "links_category_id_fkey"
+            columns: ["category_id"]
+            isOneToOne: false
+            referencedRelation: "categories"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      profiles: {
+        Row: {
+          avatar_url: string | null
+          banner_text: string | null
+          banner_url: string | null
+          bio: string | null
+          created_at: string
+          display_name: string
+          id: string
+          is_primary: boolean
+          socials: Json
+          updated_at: string
+          user_id: string
+          username: string
+        }
+        Insert: {
+          avatar_url?: string | null
+          banner_text?: string | null
+          banner_url?: string | null
+          bio?: string | null
+          created_at?: string
+          display_name?: string
+          id?: string
+          is_primary?: boolean
+          socials?: Json
+          updated_at?: string
+          user_id: string
+          username?: string
+        }
+        Update: {
+          avatar_url?: string | null
+          banner_text?: string | null
+          banner_url?: string | null
+          bio?: string | null
+          created_at?: string
+          display_name?: string
+          id?: string
+          is_primary?: boolean
+          socials?: Json
+          updated_at?: string
+          user_id?: string
+          username?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      register_click: { Args: { _link_id: string }; Returns: undefined }
     }
     Enums: {
       [_ in never]: never
