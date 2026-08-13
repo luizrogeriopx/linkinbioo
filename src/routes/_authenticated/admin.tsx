@@ -4,9 +4,11 @@ import { useMemo, useRef, useState } from "react";
 import {
   ArrowDown,
   ArrowUp,
+  Camera,
   Copy,
   Download,
   ExternalLink,
+  Loader2,
   LogOut,
   Pencil,
   Plus,
@@ -15,6 +17,7 @@ import {
   Upload,
 } from "lucide-react";
 import { toast } from "sonner";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import {
@@ -639,6 +642,82 @@ function LinksTab({
 
 /* ---------------- Perfil ---------------- */
 
+async function processAndUploadAvatar(file: File, userId: string): Promise<string> {
+  const compressedBlob = await new Promise<Blob>((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const img = new Image();
+      img.onload = () => {
+        const maxDim = 512;
+        let width = img.width;
+        let height = img.height;
+        if (width > maxDim || height > maxDim) {
+          if (width > height) {
+            height = Math.round((height * maxDim) / width);
+            width = maxDim;
+          } else {
+            width = Math.round((width * maxDim) / height);
+            height = maxDim;
+          }
+        }
+        const canvas = document.createElement("canvas");
+        canvas.width = width;
+        canvas.height = height;
+        const ctx = canvas.getContext("2d");
+        if (!ctx) {
+          reject(new Error("Não foi possível processar a imagem."));
+          return;
+        }
+        ctx.drawImage(img, 0, 0, width, height);
+        canvas.toBlob(
+          (blob) => {
+            if (blob) resolve(blob);
+            else reject(new Error("Falha ao compactar imagem."));
+          },
+          "image/webp",
+          0.85,
+        );
+      };
+      img.onerror = () => reject(new Error("Falha ao abrir imagem selecionada."));
+      img.src = e.target?.result as string;
+    };
+    reader.onerror = () => reject(new Error("Falha ao ler o arquivo."));
+    reader.readAsDataURL(file);
+  });
+
+  try {
+    const filePath = `${userId}/avatar-${Date.now()}.webp`;
+    const { error: uploadError } = await supabase.storage
+      .from("avatars")
+      .upload(filePath, compressedBlob, {
+        contentType: "image/webp",
+        upsert: true,
+      });
+
+    if (!uploadError) {
+      const { data } = supabase.storage.from("avatars").getPublicUrl(filePath);
+      if (data?.publicUrl) {
+        return data.publicUrl;
+      }
+    }
+  } catch {
+    // Graceful fallback to data URL if storage is not provisioned
+  }
+
+  return new Promise<string>((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      if (typeof reader.result === "string") {
+        resolve(reader.result);
+      } else {
+        reject(new Error("Falha ao processar dados da imagem."));
+      }
+    };
+    reader.onerror = () => reject(new Error("Falha ao converter imagem."));
+    reader.readAsDataURL(compressedBlob);
+  });
+}
+
 function ProfileTab({
   userId,
   profile,
@@ -651,6 +730,40 @@ function ProfileTab({
   const [form, setForm] = useState<Partial<Profile>>(
     profile ?? { display_name: "", username: "", bio: "", socials: [] },
   );
+  const [uploading, setUploading] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const handleAvatarFile = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    if (!file.type.startsWith("image/")) {
+      toast.error("Por favor, selecione um arquivo de imagem válido.");
+      return;
+    }
+
+    setUploading(true);
+    try {
+      const url = await processAndUploadAvatar(file, userId);
+      setForm((prev) => ({ ...prev, avatar_url: url }));
+      toast.success("Foto carregada com sucesso!");
+    } catch (err: any) {
+      toast.error(err?.message || "Erro ao processar imagem.");
+    } finally {
+      setUploading(false);
+      if (fileInputRef.current) {
+        fileInputRef.current.value = "";
+      }
+    }
+  };
+
+  const handleRemoveAvatar = () => {
+    setForm((prev) => ({ ...prev, avatar_url: null }));
+    if (fileInputRef.current) {
+      fileInputRef.current.value = "";
+    }
+    toast.info("Foto removida. Salve o perfil para confirmar.");
+  };
 
   const mutation = useMutation({
     mutationFn: async () => {
@@ -678,7 +791,67 @@ function ProfileTab({
 
   return (
     <Card className="glass border-glass-border">
-      <CardContent className="space-y-4 p-6">
+      <CardContent className="space-y-5 p-6">
+        <div className="space-y-2">
+          <Label>Foto de perfil</Label>
+          <div className="flex flex-wrap items-center gap-4 rounded-2xl border border-glass-border bg-card/40 p-4">
+            <Avatar className="size-20 border-2 border-primary/40 shadow-md">
+              <AvatarImage src={form.avatar_url ?? undefined} alt={form.display_name ?? "Avatar"} />
+              <AvatarFallback className="text-lg font-semibold">
+                {(form.display_name || "Perfil").slice(0, 2).toUpperCase()}
+              </AvatarFallback>
+            </Avatar>
+
+            <div className="flex flex-col gap-2">
+              <input
+                ref={fileInputRef}
+                type="file"
+                accept="image/*"
+                className="hidden"
+                onChange={handleAvatarFile}
+              />
+              <div className="flex flex-wrap gap-2">
+                <Button
+                  type="button"
+                  variant="secondary"
+                  size="sm"
+                  className="rounded-xl"
+                  disabled={uploading}
+                  onClick={() => fileInputRef.current?.click()}
+                >
+                  {uploading ? (
+                    <>
+                      <Loader2 className="mr-2 size-4 animate-spin" />
+                      Enviando...
+                    </>
+                  ) : (
+                    <>
+                      <Upload className="mr-2 size-4" />
+                      {form.avatar_url ? "Alterar foto" : "Carregar foto"}
+                    </>
+                  )}
+                </Button>
+                {form.avatar_url ? (
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    size="sm"
+                    className="rounded-xl text-destructive hover:bg-destructive/10"
+                    disabled={uploading}
+                    onClick={handleRemoveAvatar}
+                  >
+                    <Trash2 className="mr-2 size-4" />
+                    Remover
+                  </Button>
+                ) : null}
+              </div>
+              <p className="text-xs text-muted-foreground">
+                Formatos recomendados: PNG, JPG ou WEBP (máx. 5MB).
+              </p>
+            </div>
+          </div>
+        </div>
+
         <div className="grid gap-3 sm:grid-cols-2">
           <Field label="Nome" id="p-name">
             <Input
@@ -701,14 +874,6 @@ function ProfileTab({
             rows={3}
             value={form.bio ?? ""}
             onChange={(e) => setForm({ ...form, bio: e.target.value })}
-          />
-        </Field>
-        <Field label="URL da foto de perfil" id="p-avatar">
-          <Input
-            id="p-avatar"
-            placeholder="https://..."
-            value={form.avatar_url ?? ""}
-            onChange={(e) => setForm({ ...form, avatar_url: e.target.value })}
           />
         </Field>
         <div className="grid gap-3 sm:grid-cols-2">
