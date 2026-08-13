@@ -109,7 +109,35 @@ function RootShell({ children }: { children: ReactNode }) {
       </head>
       <body>
         <ScriptOnce>
-          {`try{var t=localStorage.getItem('bio-theme')||'dark';document.documentElement.classList.toggle('dark',t==='dark')}catch(e){}`}
+          {`try{var t=localStorage.getItem('bio-theme')||'dark';document.documentElement.classList.toggle('dark',t==='dark')}catch(e){}
+try{
+  function _maskLovable(){
+    var s='#lovable-badge,#lovable-badge-container,[id*="lovable-badge"],[id*="lovable_badge"],[class*="lovable-badge"],[class*="lovable_badge"],[data-lovable-badge],[data-lovable-editor],a[href*="lovable.dev"]';
+    document.querySelectorAll(s).forEach(function(el){
+      el.style.setProperty('display','none','important');
+      el.style.setProperty('visibility','hidden','important');
+      el.style.setProperty('opacity','0','important');
+      el.style.setProperty('pointer-events','none','important');
+    });
+    document.querySelectorAll('a, button, div, span').forEach(function(el){
+      if(el.children.length===0 && (el.textContent||'').toLowerCase().includes('lovable')){
+        var p = el.closest('a[href*="lovable"]') || el.closest('#lovable-badge') || el.closest('.lovable-badge');
+        if(p){
+          p.style.setProperty('display','none','important');
+          p.style.setProperty('visibility','hidden','important');
+        }
+      }
+    });
+  }
+  if(typeof window!=='undefined'){
+    _maskLovable();
+    if(window.MutationObserver){
+      new MutationObserver(_maskLovable).observe(document.documentElement,{childList:true,subtree:true});
+    }
+    window.addEventListener('DOMContentLoaded',_maskLovable);
+    window.addEventListener('load',_maskLovable);
+  }
+}catch(e){}`}
         </ScriptOnce>
         {children}
         <Scripts />

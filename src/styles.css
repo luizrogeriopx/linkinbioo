@@ -183,3 +183,33 @@
 @utility glow {
   box-shadow: var(--shadow-glow);
 }
+
+/* Mascarar botão/badge "Edit with Lovable" */
+#lovable-badge,
+#lovable-badge-container,
+[id*="lovable-badge"],
+[id*="lovable_badge"],
+[class*="lovable-badge"],
+[class*="lovable_badge"],
+[data-lovable-badge],
+[data-lovable-editor],
+a[href*="lovable.dev"],
+button[aria-label*="Lovable" i],
+a[aria-label*="Lovable" i],
+[data-component-name*="Lovable" i] {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+  clip-path: inset(100%) !important;
+  clip: rect(0 0 0 0) !important;
+  width: 0 !important;
+  height: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  position: absolute !important;
+  top: -9999px !important;
+  left: -9999px !important;
+  z-index: -99999 !important;
+}
