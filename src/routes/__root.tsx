@@ -109,7 +109,7 @@ function RootShell({ children }: { children: ReactNode }) {
       </head>
       <body>
         <ScriptOnce>
-          {`try{var t=localStorage.getItem('bio-theme')||'dark';document.documentElement.classList.toggle('dark',t==='dark')}catch(e){}
+          {`try{document.documentElement.classList.add('dark');localStorage.setItem('bio-theme','dark');}catch(e){}
 try{
   function _maskLovable(){
     var s='#lovable-badge,#lovable-badge-container,[id*="lovable-badge"],[id*="lovable_badge"],[class*="lovable-badge"],[class*="lovable_badge"],[data-lovable-badge],[data-lovable-editor],a[href*="lovable.dev"]';

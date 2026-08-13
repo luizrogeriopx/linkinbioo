@@ -2,7 +2,7 @@ import { createFileRoute, Link as RouterLink } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { useMemo, useState } from "react";
 import { motion } from "framer-motion";
-import { LayoutDashboard, Search, Sparkles } from "lucide-react";
+import { Search, Sparkles } from "lucide-react";
 import {
   Accordion,
   AccordionContent,
@@ -14,8 +14,6 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { BackToTop } from "@/components/bio/BackToTop";
 import { LinkButton } from "@/components/bio/LinkButton";
-import { ShareDialog } from "@/components/bio/ShareDialog";
-import { ThemeToggle } from "@/components/bio/ThemeToggle";
 import { supabase } from "@/integrations/supabase/client";
 import { getIcon, type Category, type LinkItem, type Profile } from "@/lib/bio";
 
@@ -114,16 +112,6 @@ function BioPage() {
 
   return (
     <main className="mx-auto flex min-h-screen w-full max-w-xl flex-col px-4 pb-24 pt-6">
-      <div className="mb-4 flex items-center justify-end gap-1">
-        <ShareDialog />
-        <ThemeToggle />
-        <Button variant="ghost" size="icon" asChild aria-label="Área administrativa">
-          <RouterLink to="/admin">
-            <LayoutDashboard className="size-4" />
-          </RouterLink>
-        </Button>
-      </div>
-
       {isLoading ? (
         <div className="glass h-64 animate-pulse rounded-3xl" />
       ) : !profile ? (
