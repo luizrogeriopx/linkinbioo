@@ -36,12 +36,12 @@ export function LinkButton({ link, highlight }: { link: LinkItem; highlight?: bo
       style={
         link.color
           ? { boxShadow: `0 0 0 1px ${link.color}55, 0 18px 40px -26px ${link.color}` }
-          : undefined
+          : {}
       }
     >
       <span
         className="flex size-11 shrink-0 items-center justify-center rounded-xl bg-primary/15 text-primary"
-        style={link.color ? { backgroundColor: `${link.color}22`, color: link.color } : undefined}
+        style={link.color ? { backgroundColor: `${link.color}22`, color: link.color } : {}}
         aria-hidden
       >
         <Icon className="size-5" />
