@@ -154,7 +154,11 @@ export type Database = {
           display_name: string
           id: string
           is_primary: boolean
+          plan: string
+          role: string
           socials: Json
+          subscription_status: string
+          trial_ends_at: string | null
           updated_at: string
           user_id: string
           username: string
@@ -168,7 +172,11 @@ export type Database = {
           display_name?: string
           id?: string
           is_primary?: boolean
+          plan?: string
+          role?: string
           socials?: Json
+          subscription_status?: string
+          trial_ends_at?: string | null
           updated_at?: string
           user_id: string
           username?: string
@@ -182,7 +190,11 @@ export type Database = {
           display_name?: string
           id?: string
           is_primary?: boolean
+          plan?: string
+          role?: string
           socials?: Json
+          subscription_status?: string
+          trial_ends_at?: string | null
           updated_at?: string
           user_id?: string
           username?: string
@@ -194,6 +206,7 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      is_admin: { Args: never; Returns: boolean }
       register_click: { Args: { _link_id: string }; Returns: undefined }
     }
     Enums: {
