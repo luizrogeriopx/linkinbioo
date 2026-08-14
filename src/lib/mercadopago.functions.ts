@@ -54,7 +54,7 @@ export const savePaymentSettings = createServerFn({ method: "POST" })
   .handler(async ({ data, context }) => {
     await assertAdmin(context);
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
-    const update: Record<string, unknown> = {
+    const update: { public_key: string; is_sandbox: boolean; access_token?: string } = {
       public_key: data.publicKey,
       is_sandbox: data.isSandbox,
     };

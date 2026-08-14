@@ -31,11 +31,9 @@ export async function mpRequest<T>(
   };
   if (init.idempotencyKey) headers["X-Idempotency-Key"] = init.idempotencyKey;
 
-  const response = await fetch(`https://api.mercadopago.com${path}`, {
-    method: init.method ?? "GET",
-    headers,
-    body: init.body ? JSON.stringify(init.body) : undefined,
-  });
+  const requestInit: RequestInit = { method: init.method ?? "GET", headers };
+  if (init.body) requestInit.body = JSON.stringify(init.body);
+  const response = await fetch(`https://api.mercadopago.com${path}`, requestInit);
 
   const payload = (await response.json().catch(() => ({}))) as Record<string, unknown>;
   if (!response.ok) {
