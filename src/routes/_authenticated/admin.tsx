@@ -5,21 +5,31 @@ import {
   ArrowDown,
   ArrowUp,
   Camera,
+  Check,
   Copy,
+  CreditCard,
+  DollarSign,
   Download,
   ExternalLink,
+  Globe,
   Loader2,
   LogOut,
   Pencil,
   Plus,
   Search,
+  ShieldCheck,
+  Sparkles,
   Trash2,
+  TrendingUp,
   Upload,
+  Users,
+  Zap,
 } from "lucide-react";
 import { toast } from "sonner";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   Dialog,
   DialogContent,
@@ -44,6 +54,8 @@ import { supabase } from "@/integrations/supabase/client";
 import {
   CATEGORY_PRESETS,
   ICON_OPTIONS,
+  SAAS_CONFIG,
+  formatBRL,
   getIcon,
   normalizeUrl,
   type Category,
@@ -107,19 +119,48 @@ function AdminPage() {
     return <div className="mx-auto mt-24 h-40 w-full max-w-4xl animate-pulse rounded-3xl bg-muted" />;
   }
 
+  const profile = data.profile;
+  const username = profile?.username || "usuario";
+  const userBioPath = `/${username}`;
+  const isAdmin = profile?.role === "admin" || profile?.username === SAAS_CONFIG.adminUsername;
+
+  const copyPublicUrl = () => {
+    const fullUrl = `${window.location.origin}${userBioPath}`;
+    void navigator.clipboard.writeText(fullUrl);
+    toast.success(`Link copiado: ${fullUrl}`);
+  };
+
   return (
     <main className="mx-auto w-full max-w-5xl px-4 py-8">
       <header className="mb-6 flex flex-wrap items-center justify-between gap-3">
         <div>
-          <h1 className="text-2xl font-bold">Painel</h1>
-          <p className="text-sm text-muted-foreground">
-            Organize seus links de afiliado por categorias.
+          <div className="flex items-center gap-2">
+            <h1 className="text-2xl font-bold">Painel</h1>
+            {isAdmin ? (
+              <Badge className="bg-gradient-to-r from-amber-500 to-orange-500 font-semibold text-white">
+                👑 Super Admin
+              </Badge>
+            ) : (
+              <Badge variant="secondary" className="border border-primary/30 text-primary">
+                Plano Pro ({SAAS_CONFIG.formattedPrice}/mês)
+              </Badge>
+            )}
+          </div>
+          <p className="mt-0.5 text-sm text-muted-foreground">
+            Gerencie sua bio exclusiva em{" "}
+            <span className="font-mono font-medium text-foreground">{userBioPath}</span>
           </p>
         </div>
-        <div className="flex items-center gap-1">
-          <Button variant="ghost" size="icon" asChild aria-label="Ver página pública">
-            <RouterLink to="/">
-              <ExternalLink className="size-4" />
+
+        <div className="flex flex-wrap items-center gap-2">
+          <Button variant="outline" size="sm" className="rounded-xl" onClick={copyPublicUrl}>
+            <Copy className="mr-1.5 size-3.5" />
+            Copiar meu link
+          </Button>
+          <Button variant="secondary" size="sm" asChild className="rounded-xl" aria-label="Ver minha página pública">
+            <RouterLink to={userBioPath} target="_blank">
+              <ExternalLink className="mr-1.5 size-3.5" />
+              Ver minha bio
             </RouterLink>
           </Button>
           <Button variant="ghost" size="icon" onClick={signOut} aria-label="Sair">
@@ -129,11 +170,13 @@ function AdminPage() {
       </header>
 
       <Tabs defaultValue="links">
-        <TabsList className="grid w-full grid-cols-4">
+        <TabsList className={`grid w-full ${isAdmin ? "grid-cols-6" : "grid-cols-5"}`}>
           <TabsTrigger value="links">Links</TabsTrigger>
           <TabsTrigger value="categories">Categorias</TabsTrigger>
           <TabsTrigger value="stats">Estatísticas</TabsTrigger>
           <TabsTrigger value="profile">Perfil</TabsTrigger>
+          <TabsTrigger value="subscription">Assinatura</TabsTrigger>
+          {isAdmin ? <TabsTrigger value="superadmin">👑 Super Admin</TabsTrigger> : null}
         </TabsList>
 
         <TabsContent value="links" className="pt-4">
@@ -158,6 +201,16 @@ function AdminPage() {
         <TabsContent value="profile" className="pt-4">
           <ProfileTab userId={data.userId} profile={data.profile} refresh={refresh} />
         </TabsContent>
+
+        <TabsContent value="subscription" className="pt-4">
+          <SubscriptionTab profile={data.profile} />
+        </TabsContent>
+
+        {isAdmin ? (
+          <TabsContent value="superadmin" className="pt-4">
+            <SuperAdminTab />
+          </TabsContent>
+        ) : null}
       </Tabs>
     </main>
   );
@@ -1006,3 +1059,225 @@ function IconBtn({
     </Button>
   );
 }
+
+/* ---------------- Aba de Assinatura ---------------- */
+
+function SubscriptionTab({ profile }: { profile: Profile | null }) {
+  return (
+    <div className="space-y-6">
+      <Card className="glass border-glass-border">
+        <CardHeader>
+          <div className="flex flex-wrap items-center justify-between gap-3">
+            <div>
+              <CardTitle className="text-xl font-bold">Minha Assinatura</CardTitle>
+              <p className="text-xs text-muted-foreground">Gerencie os detalhes do seu plano LinkBio SaaS.</p>
+            </div>
+            <Badge className="bg-emerald-500/20 text-emerald-400 border-emerald-500/30">
+              ● Assinatura Ativa
+            </Badge>
+          </div>
+        </CardHeader>
+        <CardContent className="space-y-6">
+          <div className="rounded-2xl border border-glass-border bg-card/40 p-5">
+            <div className="flex flex-wrap items-center justify-between gap-4">
+              <div>
+                <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Plano Atual</p>
+                <h3 className="mt-1 text-2xl font-bold">Plano Pro Ilimitado</h3>
+                <p className="text-sm text-primary font-medium">{SAAS_CONFIG.formattedPrice} / mês</p>
+              </div>
+              <Button
+                variant="outline"
+                className="rounded-xl"
+                onClick={() => toast.info("Sua assinatura está ativa e regularizada.")}
+              >
+                <CreditCard className="mr-2 size-4" />
+                Gerenciar Pagamento
+              </Button>
+            </div>
+          </div>
+
+          <div className="space-y-3">
+            <h4 className="text-sm font-semibold">Benefícios inclusos no seu plano:</h4>
+            <div className="grid gap-2.5 sm:grid-cols-2 text-sm text-muted-foreground">
+              <div className="flex items-center gap-2">
+                <Check className="size-4 text-emerald-400" /> Links e Categorias ilimitados
+              </div>
+              <div className="flex items-center gap-2">
+                <Check className="size-4 text-emerald-400" /> Username exclusivo (/{profile?.username ?? "seunome"})
+              </div>
+              <div className="flex items-center gap-2">
+                <Check className="size-4 text-emerald-400" /> Rastreamento e histórico de cliques
+              </div>
+              <div className="flex items-center gap-2">
+                <Check className="size-4 text-emerald-400" /> Banners e Links patrocinados
+              </div>
+              <div className="flex items-center gap-2">
+                <Check className="size-4 text-emerald-400" /> Design Glassmorphism e Tema Escuro
+              </div>
+              <div className="flex items-center gap-2">
+                <Check className="size-4 text-emerald-400" /> Suporte prioritário
+              </div>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+    </div>
+  );
+}
+
+/* ---------------- Aba de Super Admin ---------------- */
+
+function SuperAdminTab() {
+  const [searchTerm, setSearchTerm] = useState("");
+
+  const { data: adminStats, isLoading } = useQuery({
+    queryKey: ["super-admin-stats"],
+    queryFn: async () => {
+      const [profilesRes, linksRes, clicksRes] = await Promise.all([
+        supabase.from("profiles").select("*").order("created_at", { ascending: false }),
+        supabase.from("links").select("id, user_id, is_active"),
+        supabase.from("link_clicks").select("id, user_id"),
+      ]);
+
+      const profiles = (profilesRes.data ?? []) as Profile[];
+      const links = linksRes.data ?? [];
+      const clicks = clicksRes.data ?? [];
+
+      const totalUsers = profiles.length;
+      const totalLinks = links.length;
+      const totalClicks = clicks.length;
+      const estimatedMRR = totalUsers * SAAS_CONFIG.monthlyPrice;
+
+      return {
+        profiles,
+        totalUsers,
+        totalLinks,
+        totalClicks,
+        estimatedMRR,
+      };
+    },
+  });
+
+  if (isLoading || !adminStats) {
+    return <div className="h-48 w-full animate-pulse rounded-3xl bg-muted" />;
+  }
+
+  const filteredUsers = adminStats.profiles.filter((p) =>
+    `${p.display_name} ${p.username}`.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  return (
+    <div className="space-y-6">
+      {/* Cards de Métricas Globais */}
+      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <Card className="glass border-glass-border">
+          <CardContent className="p-5">
+            <div className="flex items-center justify-between">
+              <span className="text-xs font-semibold text-muted-foreground uppercase">Total de Usuários</span>
+              <Users className="size-4 text-primary" />
+            </div>
+            <p className="mt-2 text-2xl font-bold">{adminStats.totalUsers}</p>
+            <p className="mt-1 text-[11px] text-muted-foreground">Cadastros no sistema</p>
+          </CardContent>
+        </Card>
+
+        <Card className="glass border-glass-border">
+          <CardContent className="p-5">
+            <div className="flex items-center justify-between">
+              <span className="text-xs font-semibold text-muted-foreground uppercase">Links Cadastrados</span>
+              <Sparkles className="size-4 text-accent" />
+            </div>
+            <p className="mt-2 text-2xl font-bold">{adminStats.totalLinks}</p>
+            <p className="mt-1 text-[11px] text-muted-foreground">Em toda a plataforma</p>
+          </CardContent>
+        </Card>
+
+        <Card className="glass border-glass-border">
+          <CardContent className="p-5">
+            <div className="flex items-center justify-between">
+              <span className="text-xs font-semibold text-muted-foreground uppercase">Cliques Globais</span>
+              <TrendingUp className="size-4 text-emerald-400" />
+            </div>
+            <p className="mt-2 text-2xl font-bold">{adminStats.totalClicks}</p>
+            <p className="mt-1 text-[11px] text-muted-foreground">Rastreados em todos os links</p>
+          </CardContent>
+        </Card>
+
+        <Card className="glass border-glass-border">
+          <CardContent className="p-5">
+            <div className="flex items-center justify-between">
+              <span className="text-xs font-semibold text-muted-foreground uppercase">MRR Estimado</span>
+              <DollarSign className="size-4 text-amber-400" />
+            </div>
+            <p className="mt-2 text-2xl font-bold text-emerald-400">
+              {formatBRL(adminStats.estimatedMRR)}
+            </p>
+            <p className="mt-1 text-[11px] text-muted-foreground">Base: {SAAS_CONFIG.formattedPrice}/usuário</p>
+          </CardContent>
+        </Card>
+      </div>
+
+      {/* Lista e Gerenciamento de Usuários */}
+      <Card className="glass border-glass-border">
+        <CardHeader className="p-5 pb-3">
+          <div className="flex flex-wrap items-center justify-between gap-3">
+            <div>
+              <CardTitle className="text-lg font-bold">Usuários do SaaS ({filteredUsers.length})</CardTitle>
+              <p className="text-xs text-muted-foreground">Acompanhe todos os clientes e links da plataforma.</p>
+            </div>
+            <div className="w-full max-w-xs">
+              <Input
+                placeholder="Buscar usuário ou @username..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="h-9 text-xs"
+              />
+            </div>
+          </div>
+        </CardHeader>
+        <CardContent className="p-5 pt-0">
+          <div className="divide-y divide-glass-border overflow-hidden rounded-2xl border border-glass-border">
+            {filteredUsers.length === 0 ? (
+              <p className="p-6 text-center text-xs text-muted-foreground">Nenhum usuário encontrado.</p>
+            ) : (
+              filteredUsers.map((user) => (
+                <div key={user.id} className="flex flex-wrap items-center justify-between gap-3 p-3.5 hover:bg-card/40 transition-colors">
+                  <div className="flex items-center gap-3">
+                    <Avatar className="size-10 border border-primary/30">
+                      <AvatarImage src={user.avatar_url ?? undefined} alt={user.display_name} />
+                      <AvatarFallback className="text-xs font-semibold">
+                        {user.display_name.slice(0, 2).toUpperCase()}
+                      </AvatarFallback>
+                    </Avatar>
+                    <div>
+                      <p className="text-sm font-semibold flex items-center gap-2">
+                        {user.display_name}
+                        {user.role === "admin" || user.username === SAAS_CONFIG.adminUsername ? (
+                          <Badge className="bg-amber-500/20 text-amber-300 text-[10px] py-0 px-1.5">Admin</Badge>
+                        ) : null}
+                      </p>
+                      <p className="text-xs text-muted-foreground">@{user.username}</p>
+                    </div>
+                  </div>
+
+                  <div className="flex items-center gap-3">
+                    <Badge variant="outline" className="text-[11px] border-emerald-500/30 text-emerald-400">
+                      {user.plan?.toUpperCase() ?? "PRO"} • {SAAS_CONFIG.formattedPrice}/mês
+                    </Badge>
+                    <Button variant="ghost" size="sm" asChild className="rounded-xl text-xs">
+                      <RouterLink to={`/${user.username}`} target="_blank">
+                        <ExternalLink className="mr-1 size-3.5" />
+                        Ver Bio
+                      </RouterLink>
+                    </Button>
+                  </div>
+                </div>
+              ))
+            )}
+          </div>
+        </CardContent>
+      </Card>
+    </div>
+  );
+}
+

@@ -12,7 +12,29 @@ export type Profile = {
   banner_url: string | null;
   socials: SocialLink[];
   is_primary: boolean;
+  role?: "admin" | "user";
+  plan?: "pro" | "free";
+  subscription_status?: "active" | "trialing" | "canceled" | "past_due";
+  trial_ends_at?: string | null;
+  created_at?: string;
+  updated_at?: string;
 };
+
+export const SAAS_CONFIG = {
+  name: "LinkBio SaaS",
+  monthlyPrice: 17.40,
+  formattedPrice: "R$ 17,40",
+  adminUsername: "luizrogeriopaixao",
+  guaranteeDays: 7,
+};
+
+export function formatBRL(value: number) {
+  return new Intl.NumberFormat("pt-BR", {
+    style: "currency",
+    currency: "BRL",
+  }).format(value);
+}
+
 
 export type SocialLink = { icon: string; url: string };
 
