@@ -207,16 +207,21 @@ function AuthPage() {
             <div className="mt-3 rounded-2xl border border-primary/30 bg-primary/10 p-3.5 text-xs">
               <div className="flex items-center justify-between font-semibold text-primary">
                 <span className="flex items-center gap-1.5">
-                  <Sparkles className="size-3.5" /> Plano Pro Ilimitado
+                  <Sparkles className="size-3.5" /> 7 Dias Grátis — Todas as Funções
                 </span>
-                <span>{SAAS_CONFIG.formattedPrice}/mês</span>
+                <span className="rounded-full bg-primary/20 px-2 py-0.5 text-[10px] font-bold text-primary">
+                  R$ 0 Hoje
+                </span>
               </div>
               <div className="mt-2 space-y-1 text-muted-foreground">
+                <p className="flex items-center gap-1.5">
+                  <Check className="size-3 text-emerald-400" /> Todas as funções 100% liberadas por 7 dias
+                </p>
                 <p className="flex items-center gap-1.5">
                   <Check className="size-3 text-emerald-400" /> Links e categorias ilimitados
                 </p>
                 <p className="flex items-center gap-1.5">
-                  <ShieldCheck className="size-3 text-emerald-400" /> {SAAS_CONFIG.guaranteeDays} dias de garantia incondicional
+                  <ShieldCheck className="size-3 text-emerald-400" /> Sem compromisso — continue por {SAAS_CONFIG.formattedPrice}/mês se gostar
                 </p>
               </div>
             </div>
@@ -280,7 +285,7 @@ function AuthPage() {
               </div>
 
               <Button type="submit" className="w-full rounded-xl" size="lg" disabled={loading}>
-                {loading ? "Criando conta..." : `Criar Conta por ${SAAS_CONFIG.formattedPrice}/mês`}
+                {loading ? "Criando conta..." : "Criar Conta — 7 Dias Grátis"}
               </Button>
             </form>
           </TabsContent>

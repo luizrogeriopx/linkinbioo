@@ -22,9 +22,11 @@ export type Profile = {
 
 export const SAAS_CONFIG = {
   name: "LinkBio SaaS",
+  brandName: "LinkBioPro",
   monthlyPrice: 17.40,
   formattedPrice: "R$ 17,40",
   adminUsername: "luizrogeriopaixao",
+  trialDays: 7,
   guaranteeDays: 7,
 };
 

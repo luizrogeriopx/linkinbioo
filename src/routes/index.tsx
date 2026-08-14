@@ -82,13 +82,13 @@ function LandingPage() {
             </a>
           </nav>
 
-          <div className="flex items-center gap-3">
+            <div className="flex items-center gap-3">
             <Button variant="ghost" asChild className="hidden sm:inline-flex">
               <RouterLink to="/auth">Entrar</RouterLink>
             </Button>
             <Button asChild className="rounded-xl shadow-lg shadow-primary/20">
               <RouterLink to="/auth">
-                Criar Minha Bio
+                Começar 7 Dias Grátis
                 <ArrowRight className="ml-1.5 size-4" />
               </RouterLink>
             </Button>
@@ -109,7 +109,7 @@ function LandingPage() {
             >
               <div className="inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/10 px-3.5 py-1.5 text-xs font-semibold text-primary">
                 <Sparkles className="size-3.5" />
-                A nova geração de páginas de links para o Instagram
+                7 Dias Grátis • Todas as Funções Liberadas
               </div>
 
               <h1 className="text-4xl font-extrabold tracking-tight sm:text-5xl lg:text-6xl">
@@ -125,7 +125,7 @@ function LandingPage() {
               <div className="flex flex-col gap-3.5 sm:flex-row sm:items-center lg:justify-start">
                 <Button size="lg" asChild className="h-13 rounded-2xl px-7 text-base font-semibold shadow-xl shadow-primary/25">
                   <RouterLink to="/auth">
-                    Garantir por {SAAS_CONFIG.formattedPrice}/mês
+                    Começar 7 Dias Grátis
                     <ArrowRight className="ml-2 size-5" />
                   </RouterLink>
                 </Button>
@@ -312,66 +312,123 @@ function LandingPage() {
       <section id="precos" className="relative px-4 py-20 sm:px-6 lg:py-28">
         <div className="mx-auto max-w-6xl space-y-12">
           <div className="text-center">
-            <Badge variant="outline" className="border-primary/40 text-primary">Plano Simples e Transparente</Badge>
+            <Badge variant="outline" className="border-primary/40 text-primary">Planos Simples e Transparentes</Badge>
             <h2 className="mt-4 text-3xl font-bold tracking-tight sm:text-4xl">
-              Um valor acessível que se paga no seu <span className="gradient-text">primeiro clique</span>
+              Escolha como quer começar sua <span className="gradient-text">bio de alta conversão</span>
             </h2>
             <p className="mx-auto mt-3 max-w-xl text-sm text-muted-foreground sm:text-base">
-              Sem taxas escondidas ou limitações surpresa. Tenha todos os recursos liberados para sua bio.
+              Experimente grátis por 7 dias com todas as funções ou garanta seu acesso Pro definitivo.
             </p>
           </div>
 
-          <div className="mx-auto max-w-lg">
-            <div className="relative rounded-3xl border-2 border-primary/50 bg-card p-8 shadow-2xl shadow-primary/10">
-              {/* Badge de Destaque */}
-              <div className="absolute -top-4 left-1/2 -translate-x-1/2 rounded-full bg-gradient-to-r from-primary to-accent px-4 py-1 text-xs font-bold uppercase tracking-wider text-white shadow-md">
-                Mais Popular • Acesso Total
+          <div className="mx-auto grid max-w-4xl gap-8 lg:grid-cols-2">
+            {/* PLANO 1: 7 DIAS GRÁTIS */}
+            <div className="relative flex flex-col justify-between rounded-3xl border border-glass-border bg-card/70 p-8 shadow-xl backdrop-blur-md transition-all hover:border-primary/40">
+              <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 rounded-full border border-border bg-secondary px-4 py-1 text-xs font-bold uppercase tracking-wider text-foreground shadow-sm">
+                🎉 Teste Sem Compromisso
               </div>
 
-              <div className="text-center">
-                <h3 className="text-xl font-bold">Plano Pro Ilimitado</h3>
-                <p className="mt-1 text-xs text-muted-foreground">Tudo incluso para você vender todos os dias</p>
+              <div>
+                <div className="text-center">
+                  <h3 className="text-xl font-bold">7 Dias Grátis</h3>
+                  <p className="mt-1 text-xs text-muted-foreground">Todas as funções 100% liberadas</p>
 
-                <div className="mt-6 flex items-baseline justify-center gap-1">
-                  <span className="text-2xl font-bold text-muted-foreground">R$</span>
-                  <span className="font-display text-5xl font-extrabold text-foreground">17,40</span>
-                  <span className="text-sm font-medium text-muted-foreground">/mês</span>
-                </div>
-                <p className="mt-1 text-xs text-emerald-400 font-medium">Equivale a menos de R$ 0,58 por dia</p>
-              </div>
-
-              {/* Lista de Vantagens */}
-              <div className="mt-8 space-y-3">
-                {[
-                  "Página de Bio exclusiva com seu @username",
-                  "Links e Categorias expansíveis ilimitados",
-                  "Estatísticas completas e contador de cliques",
-                  "Efeito Glassmorphism e Tema Escuro",
-                  "Links em Destaque, Favoritos e Patrocinados",
-                  "Upload de Foto de Perfil e Banner de Aviso",
-                  "QR Code exclusivo para download e impressão",
-                  "Campo de busca rápida de produtos/ofertas",
-                  "Suporte prioritário e atualizações contínuas",
-                ].map((benefit, i) => (
-                  <div key={i} className="flex items-center gap-3 text-sm">
-                    <div className="flex size-5 shrink-0 items-center justify-center rounded-full bg-primary/20 text-primary">
-                      <Check className="size-3 font-bold" />
-                    </div>
-                    <span>{benefit}</span>
+                  <div className="mt-6 flex items-baseline justify-center gap-1">
+                    <span className="text-2xl font-bold text-muted-foreground">R$</span>
+                    <span className="font-display text-5xl font-extrabold text-foreground">0</span>
+                    <span className="text-sm font-medium text-muted-foreground">/7 dias</span>
                   </div>
-                ))}
+                  <p className="mt-1 text-xs font-medium text-emerald-400">Sem cobrança imediata</p>
+                </div>
+
+                {/* Lista de Vantagens */}
+                <div className="mt-8 space-y-3">
+                  {[
+                    "Todas as funções 100% liberadas",
+                    "Página de Bio exclusiva com seu @username",
+                    "Links e Categorias expansíveis ilimitados",
+                    "Estatísticas e contador de cliques em tempo real",
+                    "Efeito Glassmorphism e Tema Escuro",
+                    "Links em Destaque, VIP e Patrocinados",
+                    "QR Code exclusivo para download e impressão",
+                    "Cancele quando quiser em 1 clique",
+                  ].map((benefit, i) => (
+                    <div key={i} className="flex items-center gap-3 text-sm">
+                      <div className="flex size-5 shrink-0 items-center justify-center rounded-full bg-primary/20 text-primary">
+                        <Check className="size-3 font-bold" />
+                      </div>
+                      <span>{benefit}</span>
+                    </div>
+                  ))}
+                </div>
               </div>
 
-              <Button asChild size="lg" className="mt-8 h-13 w-full rounded-2xl text-base font-bold shadow-lg shadow-primary/30">
-                <RouterLink to="/auth">
-                  Assinar Agora por {SAAS_CONFIG.formattedPrice}/mês
-                  <ArrowRight className="ml-2 size-5" />
-                </RouterLink>
-              </Button>
+              <div className="mt-8">
+                <Button asChild size="lg" variant="outline" className="h-13 w-full rounded-2xl border-primary/40 text-base font-bold shadow-md hover:bg-primary hover:text-primary-foreground">
+                  <RouterLink to="/auth">
+                    Começar 7 Dias Grátis
+                    <ArrowRight className="ml-2 size-5" />
+                  </RouterLink>
+                </Button>
+                <p className="mt-3 text-center text-xs text-muted-foreground">
+                  ⚡ Ativação imediata • Teste sem riscos
+                </p>
+              </div>
+            </div>
 
-              <p className="mt-4 text-center text-xs text-muted-foreground">
-                🔒 Pagamento 100% seguro • Garantia incondicional de 7 dias
-              </p>
+            {/* PLANO 2: PRO ILIMITADO */}
+            <div className="relative flex flex-col justify-between rounded-3xl border-2 border-primary/60 bg-card p-8 shadow-2xl shadow-primary/15 transition-all">
+              <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 rounded-full bg-gradient-to-r from-primary to-accent px-4 py-1 text-xs font-bold uppercase tracking-wider text-white shadow-md">
+                💎 Mais Popular • Acesso Total
+              </div>
+
+              <div>
+                <div className="text-center">
+                  <h3 className="text-xl font-bold">Plano Pro Ilimitado</h3>
+                  <p className="mt-1 text-xs text-muted-foreground">Tudo incluso para você vender todos os dias</p>
+
+                  <div className="mt-6 flex items-baseline justify-center gap-1">
+                    <span className="text-2xl font-bold text-muted-foreground">R$</span>
+                    <span className="font-display text-5xl font-extrabold text-foreground">17,40</span>
+                    <span className="text-sm font-medium text-muted-foreground">/mês</span>
+                  </div>
+                  <p className="mt-1 text-xs font-medium text-emerald-400">Equivale a menos de R$ 0,58 por dia</p>
+                </div>
+
+                {/* Lista de Vantagens */}
+                <div className="mt-8 space-y-3">
+                  {[
+                    "Todas as funções liberadas para sempre",
+                    "Página de Bio exclusiva com seu @username",
+                    "Links e Categorias expansíveis ilimitados",
+                    "Estatísticas completas e contador de cliques",
+                    "Efeito Glassmorphism e Tema Escuro",
+                    "Links em Destaque, Favoritos e Patrocinados",
+                    "Upload de Foto de Perfil e Banner de Aviso",
+                    "QR Code exclusivo para download e impressão",
+                    "Suporte prioritário e atualizações contínuas",
+                  ].map((benefit, i) => (
+                    <div key={i} className="flex items-center gap-3 text-sm">
+                      <div className="flex size-5 shrink-0 items-center justify-center rounded-full bg-primary/20 text-primary">
+                        <Check className="size-3 font-bold" />
+                      </div>
+                      <span>{benefit}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              <div className="mt-8">
+                <Button asChild size="lg" className="h-13 w-full rounded-2xl text-base font-bold shadow-lg shadow-primary/30">
+                  <RouterLink to="/auth">
+                    Assinar Agora por {SAAS_CONFIG.formattedPrice}/mês
+                    <ArrowRight className="ml-2 size-5" />
+                  </RouterLink>
+                </Button>
+                <p className="mt-3 text-center text-xs text-muted-foreground">
+                  🔒 Pagamento 100% seguro • Garantia incondicional de 7 dias
+                </p>
+              </div>
             </div>
           </div>
         </div>
@@ -389,10 +446,10 @@ function LandingPage() {
           <Accordion type="single" collapsible className="w-full space-y-3">
             <AccordionItem value="item-1" className="rounded-2xl border border-glass-border bg-card/60 px-5">
               <AccordionTrigger className="text-left font-semibold hover:no-underline">
-                Como funciona o LinkBio SaaS?
+                Como funciona o teste grátis de 7 dias?
               </AccordionTrigger>
               <AccordionContent className="text-sm text-muted-foreground">
-                Ao criar sua conta no plano de {SAAS_CONFIG.formattedPrice}/mês, você recebe um painel administrativo intuitivo onde pode cadastrar suas categorias, inserir seus links com ícones e cores, personalizar seu perfil e obter sua URL exclusiva para colocar na bio do Instagram, TikTok ou WhatsApp.
+                Você cria sua conta em segundos e tem acesso a 100% de todas as ferramentas e recursos da plataforma por 7 dias sem custo inicial. Se gostar, pode continuar no plano de {SAAS_CONFIG.formattedPrice}/mês.
               </AccordionContent>
             </AccordionItem>
 
@@ -433,12 +490,12 @@ function LandingPage() {
             Pronto para profissionalizar sua bio hoje?
           </h2>
           <p className="mx-auto mt-4 max-w-xl text-sm text-primary-foreground/90 sm:text-base">
-            Crie sua conta agora mesmo por apenas {SAAS_CONFIG.formattedPrice}/mês e comece a gerar mais cliques e conversões.
+            Crie sua conta agora mesmo com 7 dias grátis e todas as funções liberadas para começar a gerar mais cliques e conversões.
           </p>
           <div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
             <Button asChild size="lg" variant="secondary" className="h-13 rounded-2xl px-8 text-base font-bold shadow-xl">
               <RouterLink to="/auth">
-                Criar Minha Bio Agora
+                Começar 7 Dias Grátis Agora
                 <ArrowRight className="ml-2 size-5" />
               </RouterLink>
             </Button>
@@ -451,9 +508,9 @@ function LandingPage() {
         <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-4 px-4 text-center text-xs text-muted-foreground sm:flex-row sm:px-6">
           <div className="flex items-center gap-2">
             <Zap className="size-4 text-primary" />
-            <span className="font-semibold text-foreground">{SAAS_CONFIG.name}</span> — Todos os direitos reservados.
+            <span className="font-semibold text-foreground">LinkBioPro</span>
           </div>
-          <p>© {new Date().getFullYear()} {SAAS_CONFIG.name} • {SAAS_CONFIG.formattedPrice}/mês</p>
+          <p>© 2026 • Feito Com LinkBioPro</p>
         </div>
       </footer>
     </div>

@@ -268,13 +268,12 @@ function UserBioPage() {
 
       {/* Footer com link de conversão para o SaaS */}
       <footer className="mt-12 flex flex-col items-center gap-2 text-center text-xs text-muted-foreground">
-        <p>© {new Date().getFullYear()} {profile.display_name}</p>
         <RouterLink
           to="/"
-          className="inline-flex items-center gap-1.5 rounded-full border border-glass-border bg-glass px-3 py-1 text-[11px] font-medium text-foreground transition-colors hover:border-primary/40 hover:text-primary"
+          className="inline-flex items-center gap-1.5 rounded-full border border-glass-border bg-glass px-3.5 py-1.5 text-[11px] font-medium text-foreground transition-colors hover:border-primary/40 hover:text-primary"
         >
           <Zap className="size-3 text-primary" />
-          Criado com LinkBio • Crie sua bio por R$ 17,40/mês
+          © 2026 • Feito Com LinkBioPro
         </RouterLink>
       </footer>
       <BackToTop />
