@@ -87,7 +87,10 @@ function AdminPage() {
     queryKey: ["admin-data"],
     queryFn: async () => {
       const { data: userData } = await supabase.auth.getUser();
-      const userId = userData.user!.id;
+      const user = userData.user;
+      if (!user) throw new Error("Usuário não autenticado");
+      const userId = user.id;
+
       const [profileRes, categoriesRes, linksRes, clicksRes] = await Promise.all([
         supabase.from("profiles").select("*").eq("user_id", userId).maybeSingle(),
         supabase.from("categories").select("*").eq("user_id", userId).order("position"),
@@ -99,9 +102,44 @@ function AdminPage() {
           .order("created_at", { ascending: false })
           .limit(1000),
       ]);
+
+      let profile = (profileRes.data as Profile | null) ?? null;
+
+      // Garantir criação do perfil caso o trigger do banco não tenha disparado
+      if (!profile) {
+        const meta = user.user_metadata || {};
+        const baseName =
+          meta.display_name || meta.full_name || meta.name || user.email?.split("@")[0] || "Meu Perfil";
+        const baseUsername = (meta.username || user.email?.split("@")[0] || "usuario")
+          .toLowerCase()
+          .replace(/[^a-z0-9_]/g, "");
+
+        const initialProfile = {
+          user_id: userId,
+          display_name: baseName,
+          username: baseUsername || "usuario",
+          role: baseUsername === SAAS_CONFIG.adminUsername ? "admin" : "user",
+          plan: "pro",
+          subscription_status: "active",
+        };
+
+        const { error: upsertErr } = await supabase
+          .from("profiles")
+          .upsert(initialProfile, { onConflict: "user_id" });
+
+        if (!upsertErr) {
+          const { data: createdProfile } = await supabase
+            .from("profiles")
+            .select("*")
+            .eq("user_id", userId)
+            .maybeSingle();
+          profile = (createdProfile as Profile | null) ?? (initialProfile as any);
+        }
+      }
+
       return {
         userId,
-        profile: (profileRes.data as Profile | null) ?? null,
+        profile,
         categories: (categoriesRes.data ?? []) as Category[],
         links: (linksRes.data ?? []) as LinkItem[],
         clicks: (clicksRes.data ?? []) as { link_id: string; created_at: string }[],
