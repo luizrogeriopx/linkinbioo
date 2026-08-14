@@ -392,10 +392,8 @@ function LandingPage() {
                     "Página de Bio exclusiva com seu @username",
                     "Links e Categorias expansíveis ilimitados",
                     "Estatísticas e contador de cliques em tempo real",
-                    "Efeito Glassmorphism e Tema Escuro",
-                    "Links em Destaque, VIP e Patrocinados",
-                    "QR Code exclusivo para download e impressão",
-                    "Cancele quando quiser em 1 clique",
+                    "Links em Destaque, Favoritos e Patrocinados",
+                    "Suporte prioritário",
                   ].map((benefit, i) => (
                     <div key={i} className="flex items-center gap-3 text-sm">
                       <div className="flex size-5 shrink-0 items-center justify-center rounded-full bg-primary/20 text-primary">
@@ -442,15 +440,12 @@ function LandingPage() {
                 {/* Lista de Vantagens */}
                 <div className="mt-8 space-y-3">
                   {[
-                    "Todas as funções liberadas para sempre",
+                    "Todas as funções 100% liberadas",
                     "Página de Bio exclusiva com seu @username",
                     "Links e Categorias expansíveis ilimitados",
-                    "Estatísticas completas e contador de cliques",
-                    "Efeito Glassmorphism e Tema Escuro",
+                    "Estatísticas e contador de cliques em tempo real",
                     "Links em Destaque, Favoritos e Patrocinados",
-                    "Upload de Foto de Perfil e Banner de Aviso",
-                    "QR Code exclusivo para download e impressão",
-                    "Suporte prioritário e atualizações contínuas",
+                    "Suporte prioritário",
                   ].map((benefit, i) => (
                     <div key={i} className="flex items-center gap-3 text-sm">
                       <div className="flex size-5 shrink-0 items-center justify-center rounded-full bg-primary/20 text-primary">
