@@ -1,5 +1,6 @@
+import React from "react";
 import * as Icons from "lucide-react";
-import type { LucideIcon } from "lucide-react";
+import type { LucideIcon, LucideProps } from "lucide-react";
 
 export type Profile = {
   id: string;
@@ -67,15 +68,77 @@ export type LinkItem = {
   click_count: number;
 };
 
+export const WhatsAppIcon: LucideIcon = React.forwardRef<SVGSVGElement, LucideProps>(
+  ({ color = "currentColor", size = 24, className, strokeWidth = 2, ...props }, ref) =>
+    React.createElement(
+      "svg",
+      {
+        ref,
+        xmlns: "http://www.w3.org/2000/svg",
+        width: size,
+        height: size,
+        viewBox: "0 0 24 24",
+        fill: "none",
+        stroke: color,
+        strokeWidth,
+        strokeLinecap: "round",
+        strokeLinejoin: "round",
+        className,
+        ...props,
+      },
+      React.createElement("path", {
+        d: "M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z",
+      }),
+      React.createElement("path", {
+        d: "M9.5 9a.5.5 0 0 0-.5.5c0 2 2 4 4 4a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5l-1.2.3a1 1 0 0 1-.8-.2l-.6-.6a1 1 0 0 1-.2-.8l.3-1.2A.5.5 0 0 0 10.5 8h-1z",
+      }),
+    ),
+) as unknown as LucideIcon;
+(WhatsAppIcon as React.FC).displayName = "WhatsAppIcon";
+
 const iconRecord = Icons as unknown as Record<string, LucideIcon>;
 
 export function getIcon(name?: string | null): LucideIcon {
   if (!name) return Icons.Link;
   const key = name.trim();
+  const lower = key.toLowerCase();
+  if (lower === "whatsapp" || lower === "whats" || lower === "zap") {
+    return WhatsAppIcon as unknown as LucideIcon;
+  }
+  if (lower === "telegram") {
+    return Icons.Send;
+  }
+  if (lower === "tiktok") {
+    return Icons.Music;
+  }
   return iconRecord[key] ?? iconRecord[key.charAt(0).toUpperCase() + key.slice(1)] ?? Icons.Link;
 }
 
+export const SOCIAL_OPTIONS = [
+  { value: "WhatsApp", label: "WhatsApp", placeholder: "https://wa.me/5511999999999 ou número" },
+  { value: "Instagram", label: "Instagram", placeholder: "https://instagram.com/seuusuario" },
+  { value: "Youtube", label: "YouTube", placeholder: "https://youtube.com/@seucanal" },
+  { value: "TikTok", label: "TikTok", placeholder: "https://tiktok.com/@seuusuario" },
+  { value: "Telegram", label: "Telegram", placeholder: "https://t.me/seuusuario" },
+  { value: "Twitter", label: "Twitter / X", placeholder: "https://twitter.com/seuusuario" },
+  { value: "Facebook", label: "Facebook", placeholder: "https://facebook.com/seuperfil" },
+  { value: "Linkedin", label: "LinkedIn", placeholder: "https://linkedin.com/in/seuperfil" },
+  { value: "Mail", label: "E-mail", placeholder: "mailto:seu@email.com" },
+  { value: "Globe", label: "Site / Outro", placeholder: "https://seusite.com" },
+];
+
 export const ICON_OPTIONS = [
+  "WhatsApp",
+  "Instagram",
+  "Youtube",
+  "TikTok",
+  "Telegram",
+  "Twitter",
+  "Facebook",
+  "Linkedin",
+  "MessageCircle",
+  "Mail",
+  "Globe",
   "Link",
   "Flame",
   "ShoppingBag",
@@ -83,14 +146,6 @@ export const ICON_OPTIONS = [
   "GraduationCap",
   "Bot",
   "Gift",
-  "Instagram",
-  "Youtube",
-  "Twitter",
-  "Facebook",
-  "Linkedin",
-  "MessageCircle",
-  "Send",
-  "Globe",
   "Video",
   "Star",
   "Zap",
@@ -112,5 +167,14 @@ export const CATEGORY_PRESETS = [
 export function normalizeUrl(url: string) {
   const trimmed = url.trim();
   if (!trimmed) return trimmed;
+
+  const digitsOnly = trimmed.replace(/\D/g, "");
+  if ((trimmed.startsWith("wa.me/") || trimmed.startsWith("api.whatsapp.com/")) && !trimmed.startsWith("http")) {
+    return `https://${trimmed}`;
+  }
+  if (/^(\+?55\d{10,11}|\d{10,11})$/.test(trimmed) || (digitsOnly.length >= 10 && digitsOnly.length <= 13 && !trimmed.includes(".") && !trimmed.includes("/"))) {
+    return `https://wa.me/${digitsOnly}`;
+  }
+
   return /^https?:\/\//i.test(trimmed) ? trimmed : `https://${trimmed}`;
 }

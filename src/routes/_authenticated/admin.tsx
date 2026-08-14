@@ -56,6 +56,7 @@ import {
   CATEGORY_PRESETS,
   ICON_OPTIONS,
   SAAS_CONFIG,
+  SOCIAL_OPTIONS,
   formatBRL,
   getIcon,
   normalizeUrl,
@@ -646,15 +647,21 @@ function LinksTab({
                   value={editing?.icon ?? "Link"}
                   onValueChange={(value) => setEditing({ ...editing, icon: value })}
                 >
-                  <SelectTrigger id="link-icon">
+                  <SelectTrigger id="link-icon" className="rounded-xl">
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    {ICON_OPTIONS.map((icon) => (
-                      <SelectItem key={icon} value={icon}>
-                        {icon}
-                      </SelectItem>
-                    ))}
+                    {ICON_OPTIONS.map((icon) => {
+                      const Icon = getIcon(icon);
+                      return (
+                        <SelectItem key={icon} value={icon}>
+                          <span className="flex items-center gap-2">
+                            <Icon className="size-4 text-primary" />
+                            {icon}
+                          </span>
+                        </SelectItem>
+                      );
+                    })}
                   </SelectContent>
                 </Select>
               </Field>
@@ -956,56 +963,68 @@ function ProfileTab({
           </Field>
         </div>
 
-        <div className="space-y-2">
-          <Label>Redes sociais</Label>
-          {socials.map((social, index) => (
-            <div key={index} className="flex gap-2">
-              <Select
-                value={social.icon}
-                onValueChange={(value) => {
-                  const next = [...socials];
-                  next[index] = { ...social, icon: value };
-                  setForm({ ...form, socials: next });
-                }}
-              >
-                <SelectTrigger className="w-40">
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  {ICON_OPTIONS.map((icon) => (
-                    <SelectItem key={icon} value={icon}>
-                      {icon}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-              <Input
-                value={social.url}
-                placeholder="https://instagram.com/..."
-                onChange={(e) => {
-                  const next = [...socials];
-                  next[index] = { ...social, url: normalizeUrl(e.target.value) };
-                  setForm({ ...form, socials: next });
-                }}
-              />
-              <IconBtn
-                label="Remover rede"
-                onClick={() =>
-                  setForm({ ...form, socials: socials.filter((_, i) => i !== index) })
-                }
-              >
-                <Trash2 className="size-4 text-destructive" />
-              </IconBtn>
-            </div>
-          ))}
+        <div className="space-y-3">
+          <Label className="text-sm font-semibold">Redes sociais</Label>
+          {socials.map((social, index) => {
+            const currentOption =
+              SOCIAL_OPTIONS.find((o) => o.value.toLowerCase() === social.icon.toLowerCase()) ??
+              SOCIAL_OPTIONS[0];
+            return (
+              <div key={index} className="flex flex-wrap sm:flex-nowrap items-center gap-2">
+                <Select
+                  value={social.icon}
+                  onValueChange={(value) => {
+                    const next = [...socials];
+                    next[index] = { ...social, icon: value };
+                    setForm({ ...form, socials: next });
+                  }}
+                >
+                  <SelectTrigger className="w-full sm:w-44 rounded-xl">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {SOCIAL_OPTIONS.map((opt) => {
+                      const Icon = getIcon(opt.value);
+                      return (
+                        <SelectItem key={opt.value} value={opt.value}>
+                          <span className="flex items-center gap-2">
+                            <Icon className="size-4 text-primary" />
+                            {opt.label}
+                          </span>
+                        </SelectItem>
+                      );
+                    })}
+                  </SelectContent>
+                </Select>
+                <Input
+                  value={social.url}
+                  placeholder={currentOption.placeholder}
+                  className="flex-1 rounded-xl"
+                  onChange={(e) => {
+                    const next = [...socials];
+                    next[index] = { ...social, url: normalizeUrl(e.target.value) };
+                    setForm({ ...form, socials: next });
+                  }}
+                />
+                <IconBtn
+                  label="Remover rede"
+                  onClick={() =>
+                    setForm({ ...form, socials: socials.filter((_, i) => i !== index) })
+                  }
+                >
+                  <Trash2 className="size-4 text-destructive" />
+                </IconBtn>
+              </div>
+            );
+          })}
           <Button
             variant="secondary"
             className="rounded-xl"
             onClick={() =>
-              setForm({ ...form, socials: [...socials, { icon: "Instagram", url: "" }] })
+              setForm({ ...form, socials: [...socials, { icon: "WhatsApp", url: "" }] })
             }
           >
-            <Plus className="mr-2 size-4" /> Adicionar rede
+            <Plus className="mr-2 size-4" /> Adicionar rede social
           </Button>
         </div>
 
