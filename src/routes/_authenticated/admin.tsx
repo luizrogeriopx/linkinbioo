@@ -158,7 +158,7 @@ function AdminPage() {
             Copiar meu link
           </Button>
           <Button variant="secondary" size="sm" asChild className="rounded-xl" aria-label="Ver minha página pública">
-            <RouterLink to={userBioPath} target="_blank">
+            <RouterLink to="/$username" params={{ username }} target="_blank">
               <ExternalLink className="mr-1.5 size-3.5" />
               Ver minha bio
             </RouterLink>
