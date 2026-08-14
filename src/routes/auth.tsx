@@ -3,6 +3,14 @@ import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { ArrowLeft, Check, ShieldCheck, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -36,6 +44,10 @@ function AuthPage() {
   const [username, setUsername] = useState("");
   const [loading, setLoading] = useState(false);
 
+  const [resetOpen, setResetOpen] = useState(false);
+  const [resetEmail, setResetEmail] = useState("");
+  const [resetLoading, setResetLoading] = useState(false);
+
   useEffect(() => {
     void supabase.auth.getSession().then(({ data }) => {
       if (data.session) void navigate({ to: "/admin" });
@@ -45,14 +57,39 @@ function AuthPage() {
   const signIn = async (event: React.FormEvent) => {
     event.preventDefault();
     setLoading(true);
-    const { error } = await supabase.auth.signInWithPassword({ email, password });
+    const { error } = await supabase.auth.signInWithPassword({ email: email.trim(), password });
     setLoading(false);
     if (error) {
-      toast.error(error.message);
+      if (error.message.toLowerCase().includes("invalid login credentials")) {
+        toast.error("E-mail ou senha incorretos. Se ainda não tem cadastro, use a aba 'Criar conta'.");
+      } else if (error.message.toLowerCase().includes("email not confirmed")) {
+        toast.error("Seu e-mail ainda não foi confirmado. Verifique sua caixa de entrada.");
+      } else {
+        toast.error(error.message);
+      }
       return;
     }
     toast.success("Bem-vindo de volta!");
     void navigate({ to: "/admin" });
+  };
+
+  const handleResetPassword = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!resetEmail.trim()) {
+      toast.error("Informe seu e-mail.");
+      return;
+    }
+    setResetLoading(true);
+    const { error } = await supabase.auth.resetPasswordForEmail(resetEmail.trim(), {
+      redirectTo: `${window.location.origin}/admin`,
+    });
+    setResetLoading(false);
+    if (error) {
+      toast.error(error.message);
+      return;
+    }
+    toast.success("Link de redefinição enviado para seu e-mail!");
+    setResetOpen(false);
   };
 
   const signUp = async (event: React.FormEvent) => {
@@ -135,7 +172,19 @@ function AuthPage() {
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="signin-password">Senha</Label>
+                <div className="flex items-center justify-between">
+                  <Label htmlFor="signin-password">Senha</Label>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setResetEmail(email);
+                      setResetOpen(true);
+                    }}
+                    className="text-xs text-primary hover:underline"
+                  >
+                    Esqueceu a senha?
+                  </button>
+                </div>
                 <Input
                   id="signin-password"
                   type="password"
@@ -151,6 +200,7 @@ function AuthPage() {
               </Button>
             </form>
           </TabsContent>
+
 
           {/* TAB CRIAR CONTA */}
           <TabsContent value="signup">
@@ -244,6 +294,40 @@ function AuthPage() {
           Continuar com Google
         </Button>
       </div>
+
+      {/* MODAL DE RECUPERAÇÃO DE SENHA */}
+      <Dialog open={resetOpen} onOpenChange={setResetOpen}>
+        <DialogContent className="glass sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle>Recuperar Senha</DialogTitle>
+            <DialogDescription>
+              Digite seu e-mail cadastrado para receber as instruções de redefinição de senha.
+            </DialogDescription>
+          </DialogHeader>
+          <form onSubmit={handleResetPassword} className="space-y-4 pt-2">
+            <div className="space-y-2">
+              <Label htmlFor="reset-email">E-mail</Label>
+              <Input
+                id="reset-email"
+                type="email"
+                required
+                placeholder="seu@email.com"
+                value={resetEmail}
+                onChange={(e) => setResetEmail(e.target.value)}
+              />
+            </div>
+            <DialogFooter>
+              <Button type="button" variant="ghost" onClick={() => setResetOpen(false)}>
+                Cancelar
+              </Button>
+              <Button type="submit" disabled={resetLoading}>
+                {resetLoading ? "Enviando..." : "Enviar link de recuperação"}
+              </Button>
+            </DialogFooter>
+          </form>
+        </DialogContent>
+      </Dialog>
     </main>
   );
 }
+
