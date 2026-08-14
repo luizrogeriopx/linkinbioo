@@ -209,8 +209,26 @@ function AuthPage() {
       const origin = typeof window !== "undefined" ? window.location.origin : "";
       const redirectUrl = `${origin}/admin`;
 
-      // 1. Tenta autenticação direta pelo Supabase
-      const { error } = await supabase.auth.signInWithOAuth({
+      // 1. Tenta primeiro pelo Lovable Cloud Auth (proxy integrado)
+      try {
+        const lovableResult = await lovable.auth.signInWithOAuth("google", {
+          redirect_uri: redirectUrl,
+        });
+
+        if (lovableResult.redirected) {
+          return;
+        }
+
+        if (!lovableResult.error) {
+          void navigate({ to: "/admin" });
+          return;
+        }
+      } catch (lovableErr) {
+        console.warn("Lovable OAuth not available, falling back to direct Supabase OAuth:", lovableErr);
+      }
+
+      // 2. Fallback para autenticação direta pelo Supabase
+      const { error: supabaseError } = await supabase.auth.signInWithOAuth({
         provider: "google",
         options: {
           redirectTo: redirectUrl,
@@ -221,29 +239,20 @@ function AuthPage() {
         },
       });
 
-      if (error) {
-        // 2. Fallback para Lovable Cloud Auth caso o projeto use o proxy Lovable
-        try {
-          const result = await lovable.auth.signInWithOAuth("google", {
-            redirect_uri: redirectUrl,
-          });
-          if (result.error) {
-            throw result.error;
-          }
-          if (!result.redirected) {
-            void navigate({ to: "/admin" });
-          }
-          return;
-        } catch {
-          const msg = error.message?.toLowerCase() || "";
-          if (msg.includes("provider is not enabled") || msg.includes("disabled") || msg.includes("unsupported provider")) {
-            toast.error(
-              "O provedor Google precisa estar habilitado no painel Supabase (Auth > Providers > Google). Use e-mail e senha enquanto isso.",
-              { duration: 8000 }
-            );
-          } else {
-            toast.error(error.message || "Não foi possível conectar com o Google.");
-          }
+      if (supabaseError) {
+        const msg = (supabaseError.message || "").toLowerCase();
+        if (
+          msg.includes("missing oauth secret") ||
+          msg.includes("unsupported provider") ||
+          msg.includes("provider is not enabled") ||
+          msg.includes("validation_failed")
+        ) {
+          toast.error(
+            "O Google OAuth não está configurado no Supabase. Para ativá-lo, insira o Client ID e Secret em Authentication > Providers > Google no painel Supabase, ou crie sua conta com e-mail e senha.",
+            { duration: 9000 }
+          );
+        } else {
+          toast.error(supabaseError.message || "Erro ao conectar com o Google.");
         }
       }
     } catch (err: any) {
