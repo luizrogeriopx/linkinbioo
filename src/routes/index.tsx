@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import {
   ArrowRight,
   BarChart3,
+  Battery,
   Check,
   ChevronDown,
   ExternalLink,
@@ -14,10 +15,12 @@ import {
   QrCode,
   Search,
   ShieldCheck,
+  Signal,
   Smartphone,
   Sparkles,
   Star,
   Users,
+  Wifi,
   Zap,
 } from "lucide-react";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
@@ -148,62 +151,86 @@ function LandingPage() {
               </div>
             </motion.div>
 
-            {/* Mockup Interativo Celular */}
+            {/* Mockup Interativo Smartphone */}
             <motion.div
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.6, delay: 0.2 }}
               className="flex justify-center lg:col-span-5"
             >
-              <div className="relative mx-auto w-full max-w-[340px] rounded-[44px] border-[6px] border-foreground/15 bg-background p-3 shadow-[0_25px_60px_-15px_rgba(0,0,0,0.7)] ring-1 ring-white/10">
-                {/* Notch / Speaker */}
-                <div className="mx-auto mb-3 h-4 w-28 rounded-full bg-foreground/20" />
+              <div className="relative mx-auto w-[275px] sm:w-[280px] rounded-[48px] border-[7px] border-zinc-800/90 dark:border-zinc-700/80 bg-zinc-950 p-2 shadow-[0_25px_60px_-15px_rgba(0,0,0,0.8),0_0_35px_rgba(59,130,246,0.15)] ring-1 ring-white/20">
+                {/* Botões Laterais Físicos do Smartphone */}
+                <div className="absolute -left-[9px] top-20 h-4 w-[3px] rounded-l-sm bg-zinc-600 dark:bg-zinc-500" />
+                <div className="absolute -left-[9px] top-28 h-9 w-[3px] rounded-l-sm bg-zinc-600 dark:bg-zinc-500" />
+                <div className="absolute -left-[9px] top-40 h-9 w-[3px] rounded-l-sm bg-zinc-600 dark:bg-zinc-500" />
+                <div className="absolute -right-[9px] top-32 h-12 w-[3px] rounded-r-sm bg-zinc-600 dark:bg-zinc-500" />
 
-                {/* Preview de Bio no Celular */}
-                <div className="space-y-3 rounded-[32px] bg-card/60 p-4 backdrop-blur-md">
-                  <div className="flex flex-col items-center text-center">
-                    <div className="size-16 rounded-full border-2 border-primary bg-primary/20 p-1 shadow-md">
-                      <div className="flex size-full items-center justify-center rounded-full bg-gradient-to-tr from-primary to-accent font-bold text-white">
-                        LR
+                {/* Tela do Smartphone */}
+                <div className="relative overflow-hidden rounded-[40px] bg-background/95 p-3 pt-2 ring-1 ring-white/10">
+                  {/* Barra de Status & Dynamic Island */}
+                  <div className="flex items-center justify-between px-1 pb-2">
+                    <span className="text-[10px] font-semibold text-foreground/80">9:41</span>
+                    <div className="flex h-4 w-20 items-center justify-end rounded-full bg-black pr-1.5 shadow-inner ring-1 ring-white/10">
+                      <div className="size-1.5 rounded-full bg-zinc-800 ring-1 ring-zinc-700/50" />
+                    </div>
+                    <div className="flex items-center gap-1 text-foreground/80">
+                      <Signal className="size-2.5" />
+                      <Wifi className="size-2.5" />
+                      <Battery className="size-3" />
+                    </div>
+                  </div>
+
+                  {/* Conteúdo da Bio no Celular */}
+                  <div className="space-y-2.5 rounded-[28px] bg-card/60 p-3 backdrop-blur-md">
+                    <div className="flex flex-col items-center text-center">
+                      <div className="size-14 rounded-full border-2 border-primary bg-primary/20 p-0.5 shadow-md">
+                        <div className="flex size-full items-center justify-center rounded-full bg-gradient-to-tr from-primary to-accent text-xs font-bold text-white">
+                          LR
+                        </div>
+                      </div>
+                      <p className="mt-1.5 text-xs font-bold">Luiz Rogério</p>
+                      <p className="text-[10px] font-medium text-primary">@luizrogeriopaixao</p>
+                      <p className="mt-0.5 text-[9.5px] leading-tight text-muted-foreground">
+                        Especialista em Negócios Digitais & IA
+                      </p>
+                    </div>
+
+                    {/* Banner no preview */}
+                    <div className="rounded-xl bg-gradient-to-r from-primary to-accent p-1.5 text-center text-[9px] font-semibold text-white shadow-sm">
+                      🚀 Cupom 50% OFF em Cursos de IA
+                    </div>
+
+                    {/* Links do preview */}
+                    <div className="space-y-1.5 text-[10px]">
+                      <div className="flex items-center justify-between rounded-xl border border-glass-border bg-glass p-2 font-medium text-foreground transition-all hover:bg-secondary">
+                        <span className="flex items-center gap-1.5 truncate">
+                          <Flame className="size-3 text-amber-500 shrink-0" /> 🔥 Top Ofertas da Semana
+                        </span>
+                        <ChevronDown className="size-3 text-muted-foreground shrink-0" />
+                      </div>
+
+                      <div className="flex items-center justify-between rounded-xl border border-glass-border bg-glass p-2 font-medium text-foreground transition-all hover:bg-secondary">
+                        <span className="flex items-center gap-1.5 truncate">
+                          <Layers className="size-3 text-sky-400 shrink-0" /> 🤖 Ferramentas de IA
+                        </span>
+                        <ChevronDown className="size-3 text-muted-foreground shrink-0" />
+                      </div>
+
+                      <div className="flex items-center justify-between rounded-xl border border-primary/40 bg-primary/10 p-2 font-semibold text-primary">
+                        <span className="flex items-center gap-1.5 truncate">
+                          <Star className="size-3 fill-primary text-primary shrink-0" /> ⭐ VIP no WhatsApp
+                        </span>
+                        <ArrowRight className="size-3 shrink-0" />
                       </div>
                     </div>
-                    <p className="mt-2 text-sm font-bold">Luiz Rogério</p>
-                    <p className="text-[11px] font-medium text-primary">@luizrogeriopaixao</p>
-                    <p className="mt-1 text-[11px] text-muted-foreground">Especialista em Negócios Digitais & IA</p>
-                  </div>
 
-                  {/* Banner no preview */}
-                  <div className="rounded-xl bg-gradient-to-r from-primary to-accent p-2 text-center text-[10px] font-semibold text-white shadow-sm">
-                    🚀 Cupom 50% OFF em Cursos de IA
-                  </div>
-
-                  {/* Links do preview */}
-                  <div className="space-y-2 text-[11px]">
-                    <div className="flex items-center justify-between rounded-xl border border-glass-border bg-glass p-2.5 font-semibold text-foreground transition-all hover:bg-secondary">
-                      <span className="flex items-center gap-2">
-                        <Flame className="size-3.5 text-amber-500" /> 🔥 Top Ofertas da Semana
-                      </span>
-                      <ChevronDown className="size-3.5 text-muted-foreground" />
-                    </div>
-
-                    <div className="flex items-center justify-between rounded-xl border border-glass-border bg-glass p-2.5 font-semibold text-foreground transition-all hover:bg-secondary">
-                      <span className="flex items-center gap-2">
-                        <Layers className="size-3.5 text-sky-400" /> 🤖 Ferramentas de IA Recomendadas
-                      </span>
-                      <ChevronDown className="size-3.5 text-muted-foreground" />
-                    </div>
-
-                    <div className="flex items-center justify-between rounded-xl border border-primary/40 bg-primary/10 p-2.5 font-semibold text-primary">
-                      <span className="flex items-center gap-2">
-                        <Star className="size-3.5 fill-primary text-primary" /> ⭐ Comunidade VIP no WhatsApp
-                      </span>
-                      <ArrowRight className="size-3.5" />
+                    <div className="pt-1 text-center text-[8.5px] text-muted-foreground">
+                      linkbio.pro/luizrogeriopaixao
                     </div>
                   </div>
 
-                  <div className="pt-2 text-center text-[9px] text-muted-foreground">
-                    linkbio.pro/luizrogeriopaixao
-                  </div>
+                  {/* Home Indicator Bar */}
+                  <div className="mx-auto mt-2 h-1 w-20 rounded-full bg-foreground/25" />
                 </div>
               </div>
             </motion.div>
