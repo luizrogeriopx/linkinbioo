@@ -5,11 +5,13 @@ import {
   ArrowRight,
   BarChart3,
   Battery,
+  Bot,
   Check,
   ChevronDown,
   ExternalLink,
   Flame,
   Globe,
+  GraduationCap,
   Layers,
   Lock,
   QrCode,
@@ -187,52 +189,79 @@ function LandingPage() {
                     </div>
                   </div>
 
-                  {/* Conteúdo da Bio no Celular */}
-                  <div className="my-auto space-y-2.5 rounded-[26px] bg-card/60 p-3 backdrop-blur-md">
+                  {/* Conteúdo da Bio Ocupando Toda a Tela */}
+                  <div className="flex flex-1 flex-col justify-between py-2">
+                    {/* Cabeçalho do Perfil */}
                     <div className="flex flex-col items-center text-center">
-                      <div className="size-14 rounded-full border-2 border-primary bg-primary/20 p-0.5 shadow-md">
+                      <div className="size-13 rounded-full border-2 border-primary bg-primary/20 p-0.5 shadow-md">
                         <div className="flex size-full items-center justify-center rounded-full bg-gradient-to-tr from-primary to-accent text-xs font-bold text-white">
                           LR
                         </div>
                       </div>
-                      <p className="mt-1.5 text-xs font-bold">Luiz Rogério</p>
-                      <p className="text-[10px] font-medium text-primary">@luizrogeriopaixao</p>
-                      <p className="mt-0.5 text-[9.5px] leading-tight text-muted-foreground">
+                      <p className="mt-1 text-xs font-bold text-foreground">Luiz Rogério</p>
+                      <p className="text-[10px] font-semibold text-primary">@luizrogeriopaixao</p>
+                      <p className="mt-0.5 text-[9px] leading-tight text-muted-foreground">
                         Especialista em Negócios Digitais & IA
                       </p>
                     </div>
 
-                    {/* Banner no preview */}
+                    {/* Banner de Aviso / Cupom */}
                     <div className="rounded-xl bg-gradient-to-r from-primary to-accent p-1.5 text-center text-[9px] font-semibold text-white shadow-sm">
                       🚀 Cupom 50% OFF em Cursos de IA
                     </div>
 
-                    {/* Links do preview */}
-                    <div className="space-y-1.5 text-[10px]">
-                      <div className="flex items-center justify-between rounded-xl border border-glass-border bg-glass p-2 font-medium text-foreground transition-all hover:bg-secondary">
-                        <span className="flex items-center gap-1.5 truncate">
-                          <Flame className="size-3 text-amber-500 shrink-0" /> 🔥 Top Ofertas da Semana
-                        </span>
-                        <ChevronDown className="size-3 text-muted-foreground shrink-0" />
+                    {/* Campo de Busca Rápida */}
+                    <div className="flex items-center gap-1.5 rounded-xl border border-glass-border bg-secondary/40 px-2.5 py-1 text-[9px] text-muted-foreground">
+                      <Search className="size-3 shrink-0" />
+                      <span>Buscar links e ofertas...</span>
+                    </div>
+
+                    {/* Lista de Links (Ocupando a Tela com 1 Único Ícone por Link) */}
+                    <div className="space-y-1.5">
+                      <div className="glass flex items-center gap-2 rounded-xl border border-glass-border bg-glass p-1.5 text-left transition-all">
+                        <div className="flex size-7 shrink-0 items-center justify-center rounded-lg bg-amber-500/15 text-amber-500">
+                          <Flame className="size-3.5" />
+                        </div>
+                        <div className="min-w-0 flex-1">
+                          <p className="truncate text-[10px] font-semibold text-foreground">Top Ofertas da Semana</p>
+                          <p className="truncate text-[8px] text-muted-foreground">Descontos de até 70% OFF</p>
+                        </div>
                       </div>
 
-                      <div className="flex items-center justify-between rounded-xl border border-glass-border bg-glass p-2 font-medium text-foreground transition-all hover:bg-secondary">
-                        <span className="flex items-center gap-1.5 truncate">
-                          <Layers className="size-3 text-sky-400 shrink-0" /> 🤖 Ferramentas de IA
-                        </span>
-                        <ChevronDown className="size-3 text-muted-foreground shrink-0" />
+                      <div className="glass flex items-center gap-2 rounded-xl border border-glass-border bg-glass p-1.5 text-left transition-all">
+                        <div className="flex size-7 shrink-0 items-center justify-center rounded-lg bg-sky-500/15 text-sky-400">
+                          <Bot className="size-3.5" />
+                        </div>
+                        <div className="min-w-0 flex-1">
+                          <p className="truncate text-[10px] font-semibold text-foreground">Ferramentas de IA</p>
+                          <p className="truncate text-[8px] text-muted-foreground">Produtividade e automação</p>
+                        </div>
                       </div>
 
-                      <div className="flex items-center justify-between rounded-xl border border-primary/40 bg-primary/10 p-2 font-semibold text-primary">
-                        <span className="flex items-center gap-1.5 truncate">
-                          <Star className="size-3 fill-primary text-primary shrink-0" /> ⭐ VIP no WhatsApp
-                        </span>
-                        <ArrowRight className="size-3 shrink-0" />
+                      <div className="glass flex items-center gap-2 rounded-xl border border-primary/40 bg-primary/10 p-1.5 text-left transition-all">
+                        <div className="flex size-7 shrink-0 items-center justify-center rounded-lg bg-primary/20 text-primary">
+                          <Star className="size-3.5 fill-primary text-primary" />
+                        </div>
+                        <div className="min-w-0 flex-1">
+                          <p className="truncate text-[10px] font-semibold text-primary">Comunidade VIP WhatsApp</p>
+                          <p className="truncate text-[8px] text-muted-foreground">Networking e vagas exclusivas</p>
+                        </div>
+                      </div>
+
+                      <div className="glass flex items-center gap-2 rounded-xl border border-glass-border bg-glass p-1.5 text-left transition-all">
+                        <div className="flex size-7 shrink-0 items-center justify-center rounded-lg bg-emerald-500/15 text-emerald-400">
+                          <GraduationCap className="size-3.5" />
+                        </div>
+                        <div className="min-w-0 flex-1">
+                          <p className="truncate text-[10px] font-semibold text-foreground">Cursos & Treinamentos</p>
+                          <p className="truncate text-[8px] text-muted-foreground">Do básico ao avançado</p>
+                        </div>
                       </div>
                     </div>
 
-                    <div className="pt-1 text-center text-[8.5px] text-muted-foreground">
-                      linkbio.pro/luizrogeriopaixao
+                    {/* Rodapé Interno da Bio */}
+                    <div className="pt-0.5 text-center text-[8px] text-muted-foreground">
+                      © 2026 • Feito Com LinkBioPro
                     </div>
                   </div>
 
