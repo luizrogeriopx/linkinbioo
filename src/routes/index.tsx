@@ -151,37 +151,44 @@ function LandingPage() {
               </div>
             </motion.div>
 
-            {/* Mockup Interativo Smartphone */}
+            {/* Mockup Interativo Samsung Galaxy S8 (Proporção 360x740) */}
             <motion.div
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.6, delay: 0.2 }}
               className="flex justify-center lg:col-span-5"
             >
-              <div className="relative mx-auto w-[275px] sm:w-[280px] rounded-[48px] border-[7px] border-zinc-800/90 dark:border-zinc-700/80 bg-zinc-950 p-2 shadow-[0_25px_60px_-15px_rgba(0,0,0,0.8),0_0_35px_rgba(59,130,246,0.15)] ring-1 ring-white/20">
-                {/* Botões Laterais Físicos do Smartphone */}
-                <div className="absolute -left-[9px] top-20 h-4 w-[3px] rounded-l-sm bg-zinc-600 dark:bg-zinc-500" />
-                <div className="absolute -left-[9px] top-28 h-9 w-[3px] rounded-l-sm bg-zinc-600 dark:bg-zinc-500" />
-                <div className="absolute -left-[9px] top-40 h-9 w-[3px] rounded-l-sm bg-zinc-600 dark:bg-zinc-500" />
-                <div className="absolute -right-[9px] top-32 h-12 w-[3px] rounded-r-sm bg-zinc-600 dark:bg-zinc-500" />
+              <div className="relative mx-auto w-[285px] rounded-[42px] border-[7px] border-zinc-800 bg-[#090b10] p-1.5 shadow-[0_25px_60px_-15px_rgba(0,0,0,0.85),0_0_35px_rgba(59,130,246,0.15)] ring-1 ring-white/20">
+                {/* Botões Laterais Samsung (Volume, Bixby, Power) */}
+                <div className="absolute -left-[9px] top-24 h-12 w-[3px] rounded-l-sm bg-zinc-600 dark:bg-zinc-500" />
+                <div className="absolute -left-[9px] top-40 h-7 w-[3px] rounded-l-sm bg-zinc-600 dark:bg-zinc-500" />
+                <div className="absolute -right-[9px] top-28 h-10 w-[3px] rounded-r-sm bg-zinc-600 dark:bg-zinc-500" />
 
-                {/* Tela do Smartphone */}
-                <div className="relative overflow-hidden rounded-[40px] bg-background/95 p-3 pt-2 ring-1 ring-white/10">
-                  {/* Barra de Status & Dynamic Island */}
-                  <div className="flex items-center justify-between px-1 pb-2">
-                    <span className="text-[10px] font-semibold text-foreground/80">9:41</span>
-                    <div className="flex h-4 w-20 items-center justify-end rounded-full bg-black pr-1.5 shadow-inner ring-1 ring-white/10">
-                      <div className="size-1.5 rounded-full bg-zinc-800 ring-1 ring-zinc-700/50" />
+                {/* Tela Infinity Display com Proporção 360x740 */}
+                <div className="relative flex aspect-[360/740] w-full flex-col justify-between overflow-hidden rounded-[32px] bg-background/95 p-3 pt-1.5 ring-1 ring-white/10">
+                  {/* Top Bezel / Sensores do Galaxy S8 */}
+                  <div>
+                    <div className="flex items-center justify-center gap-2 pb-1.5 pt-0.5">
+                      <div className="size-1 rounded-full bg-blue-500/60" />
+                      <div className="size-1.5 rounded-full bg-zinc-800 ring-1 ring-zinc-700/60" />
+                      <div className="h-1 w-9 rounded-full bg-zinc-700" />
+                      <div className="size-1.5 rounded-full bg-zinc-800 ring-1 ring-zinc-700/60" />
                     </div>
-                    <div className="flex items-center gap-1 text-foreground/80">
-                      <Signal className="size-2.5" />
-                      <Wifi className="size-2.5" />
-                      <Battery className="size-3" />
+
+                    {/* Barra de Status */}
+                    <div className="flex items-center justify-between px-1 text-[10px] font-semibold text-foreground/80">
+                      <span>12:45</span>
+                      <div className="flex items-center gap-1">
+                        <Signal className="size-2.5" />
+                        <Wifi className="size-2.5" />
+                        <span className="text-[9px] font-bold">85%</span>
+                        <Battery className="size-3" />
+                      </div>
                     </div>
                   </div>
 
                   {/* Conteúdo da Bio no Celular */}
-                  <div className="space-y-2.5 rounded-[28px] bg-card/60 p-3 backdrop-blur-md">
+                  <div className="my-auto space-y-2.5 rounded-[26px] bg-card/60 p-3 backdrop-blur-md">
                     <div className="flex flex-col items-center text-center">
                       <div className="size-14 rounded-full border-2 border-primary bg-primary/20 p-0.5 shadow-md">
                         <div className="flex size-full items-center justify-center rounded-full bg-gradient-to-tr from-primary to-accent text-xs font-bold text-white">
@@ -229,8 +236,16 @@ function LandingPage() {
                     </div>
                   </div>
 
-                  {/* Home Indicator Bar */}
-                  <div className="mx-auto mt-2 h-1 w-20 rounded-full bg-foreground/25" />
+                  {/* Barra de Navegação Inferior Samsung Galaxy (Recentes, Home, Voltar) */}
+                  <div className="flex items-center justify-around px-8 pt-1 text-muted-foreground/60">
+                    <div className="flex h-3 w-3 flex-col justify-between py-0.5">
+                      <div className="h-[1.5px] w-full rounded bg-current" />
+                      <div className="h-[1.5px] w-full rounded bg-current" />
+                      <div className="h-[1.5px] w-full rounded bg-current" />
+                    </div>
+                    <div className="size-3 rounded-[3px] border-[1.5px] border-current" />
+                    <ChevronDown className="size-3.5 rotate-90" />
+                  </div>
                 </div>
               </div>
             </motion.div>
