@@ -59,7 +59,7 @@ function AuthPage() {
     event.preventDefault();
     setLoading(true);
 
-    const cleanUsername = (username || email.split("@")[0])
+    const cleanUsername = (username || email.split("@")[0] || "usuario")
       .toLowerCase()
       .replace(/[^a-z0-9_]/g, "");
 

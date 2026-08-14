@@ -144,6 +144,75 @@ export type Database = {
           },
         ]
       }
+      payment_settings: {
+        Row: {
+          access_token: string
+          created_at: string
+          id: string
+          is_sandbox: boolean
+          provider: string
+          public_key: string
+          singleton: boolean
+          updated_at: string
+        }
+        Insert: {
+          access_token?: string
+          created_at?: string
+          id?: string
+          is_sandbox?: boolean
+          provider?: string
+          public_key?: string
+          singleton?: boolean
+          updated_at?: string
+        }
+        Update: {
+          access_token?: string
+          created_at?: string
+          id?: string
+          is_sandbox?: boolean
+          provider?: string
+          public_key?: string
+          singleton?: boolean
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      payments: {
+        Row: {
+          amount: number
+          created_at: string
+          id: string
+          mp_payment_id: string | null
+          payer_email: string | null
+          payment_method: string | null
+          status: string
+          status_detail: string | null
+          user_id: string | null
+        }
+        Insert: {
+          amount?: number
+          created_at?: string
+          id?: string
+          mp_payment_id?: string | null
+          payer_email?: string | null
+          payment_method?: string | null
+          status?: string
+          status_detail?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          amount?: number
+          created_at?: string
+          id?: string
+          mp_payment_id?: string | null
+          payer_email?: string | null
+          payment_method?: string | null
+          status?: string
+          status_detail?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           avatar_url: string | null
@@ -154,7 +223,11 @@ export type Database = {
           display_name: string
           id: string
           is_primary: boolean
+          plan: string
+          role: string
           socials: Json
+          subscription_status: string
+          trial_ends_at: string | null
           updated_at: string
           user_id: string
           username: string
@@ -168,7 +241,11 @@ export type Database = {
           display_name?: string
           id?: string
           is_primary?: boolean
+          plan?: string
+          role?: string
           socials?: Json
+          subscription_status?: string
+          trial_ends_at?: string | null
           updated_at?: string
           user_id: string
           username?: string
@@ -182,7 +259,11 @@ export type Database = {
           display_name?: string
           id?: string
           is_primary?: boolean
+          plan?: string
+          role?: string
           socials?: Json
+          subscription_status?: string
+          trial_ends_at?: string | null
           updated_at?: string
           user_id?: string
           username?: string
@@ -194,6 +275,7 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      is_admin: { Args: never; Returns: boolean }
       register_click: { Args: { _link_id: string }; Returns: undefined }
     }
     Enums: {

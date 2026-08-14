@@ -127,7 +127,7 @@ function LandingPage() {
                   </RouterLink>
                 </Button>
                 <Button size="lg" variant="outline" asChild className="h-13 rounded-2xl border-glass-border bg-glass px-6 text-base font-semibold">
-                  <RouterLink to="/luizrogeriopaixao">
+                  <RouterLink to="/$username" params={{ username: "luizrogeriopaixao" }}>
                     <ExternalLink className="mr-2 size-4" />
                     Ver Exemplo Real (@luizrogeriopaixao)
                   </RouterLink>

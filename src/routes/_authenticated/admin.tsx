@@ -158,7 +158,7 @@ function AdminPage() {
             Copiar meu link
           </Button>
           <Button variant="secondary" size="sm" asChild className="rounded-xl" aria-label="Ver minha página pública">
-            <RouterLink to={userBioPath} target="_blank">
+            <RouterLink to="/$username" params={{ username }} target="_blank">
               <ExternalLink className="mr-1.5 size-3.5" />
               Ver minha bio
             </RouterLink>
@@ -1265,7 +1265,7 @@ function SuperAdminTab() {
                       {user.plan?.toUpperCase() ?? "PRO"} • {SAAS_CONFIG.formattedPrice}/mês
                     </Badge>
                     <Button variant="ghost" size="sm" asChild className="rounded-xl text-xs">
-                      <RouterLink to={`/${user.username}`} target="_blank">
+                      <RouterLink to="/$username" params={{ username: user.username }} target="_blank">
                         <ExternalLink className="mr-1 size-3.5" />
                         Ver Bio
                       </RouterLink>
