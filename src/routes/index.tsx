@@ -216,46 +216,56 @@ function LandingPage() {
                       <span>Buscar links e ofertas...</span>
                     </div>
 
-                    {/* Lista de Links (Ocupando a Tela com 1 Único Ícone por Link) */}
+                    {/* Lista de Categorias e Links da Bio */}
                     <div className="space-y-1.5">
-                      <div className="glass flex items-center gap-2 rounded-xl border border-glass-border bg-glass p-1.5 text-left transition-all">
-                        <div className="flex size-7 shrink-0 items-center justify-center rounded-lg bg-amber-500/15 text-amber-500">
-                          <Flame className="size-3.5" />
+                      {/* Categoria 1 Expansível */}
+                      <div className="glass flex items-center justify-between rounded-xl border border-glass-border bg-glass p-1.5 px-2.5 text-left transition-all hover:bg-secondary/40">
+                        <div className="flex min-w-0 items-center gap-1.5">
+                          <span className="text-[11px]" aria-hidden>🔥</span>
+                          <span className="truncate text-[10px] font-semibold text-foreground">Top Ofertas da Semana</span>
+                          <span className="rounded-full bg-secondary px-1.5 py-0.2 text-[8px] font-bold text-muted-foreground">
+                            12
+                          </span>
                         </div>
-                        <div className="min-w-0 flex-1">
-                          <p className="truncate text-[10px] font-semibold text-foreground">Top Ofertas da Semana</p>
-                          <p className="truncate text-[8px] text-muted-foreground">Descontos de até 70% OFF</p>
-                        </div>
+                        <ChevronDown className="size-3 shrink-0 text-muted-foreground" />
                       </div>
 
-                      <div className="glass flex items-center gap-2 rounded-xl border border-glass-border bg-glass p-1.5 text-left transition-all">
-                        <div className="flex size-7 shrink-0 items-center justify-center rounded-lg bg-sky-500/15 text-sky-400">
-                          <Bot className="size-3.5" />
+                      {/* Categoria 2 Expansível */}
+                      <div className="glass flex items-center justify-between rounded-xl border border-glass-border bg-glass p-1.5 px-2.5 text-left transition-all hover:bg-secondary/40">
+                        <div className="flex min-w-0 items-center gap-1.5">
+                          <span className="text-[11px]" aria-hidden>🤖</span>
+                          <span className="truncate text-[10px] font-semibold text-foreground">Ferramentas de IA</span>
+                          <span className="rounded-full bg-secondary px-1.5 py-0.2 text-[8px] font-bold text-muted-foreground">
+                            8
+                          </span>
                         </div>
-                        <div className="min-w-0 flex-1">
-                          <p className="truncate text-[10px] font-semibold text-foreground">Ferramentas de IA</p>
-                          <p className="truncate text-[8px] text-muted-foreground">Produtividade e automação</p>
-                        </div>
+                        <ChevronDown className="size-3 shrink-0 text-muted-foreground" />
                       </div>
 
-                      <div className="glass flex items-center gap-2 rounded-xl border border-primary/40 bg-primary/10 p-1.5 text-left transition-all">
-                        <div className="flex size-7 shrink-0 items-center justify-center rounded-lg bg-primary/20 text-primary">
-                          <Star className="size-3.5 fill-primary text-primary" />
+                      {/* Categoria 3 Expansível */}
+                      <div className="glass flex items-center justify-between rounded-xl border border-glass-border bg-glass p-1.5 px-2.5 text-left transition-all hover:bg-secondary/40">
+                        <div className="flex min-w-0 items-center gap-1.5">
+                          <span className="text-[11px]" aria-hidden>📚</span>
+                          <span className="truncate text-[10px] font-semibold text-foreground">Cursos & Treinamentos</span>
+                          <span className="rounded-full bg-secondary px-1.5 py-0.2 text-[8px] font-bold text-muted-foreground">
+                            5
+                          </span>
                         </div>
-                        <div className="min-w-0 flex-1">
-                          <p className="truncate text-[10px] font-semibold text-primary">Comunidade VIP WhatsApp</p>
-                          <p className="truncate text-[8px] text-muted-foreground">Networking e vagas exclusivas</p>
-                        </div>
+                        <ChevronDown className="size-3 shrink-0 text-muted-foreground" />
                       </div>
 
-                      <div className="glass flex items-center gap-2 rounded-xl border border-glass-border bg-glass p-1.5 text-left transition-all">
-                        <div className="flex size-7 shrink-0 items-center justify-center rounded-lg bg-emerald-500/15 text-emerald-400">
-                          <GraduationCap className="size-3.5" />
+                      {/* Link VIP em Destaque */}
+                      <div className="glass flex items-center justify-between rounded-xl border border-primary/40 bg-primary/10 p-1.5 px-2.5 text-left transition-all">
+                        <div className="flex min-w-0 items-center gap-2">
+                          <div className="flex size-6 shrink-0 items-center justify-center rounded-lg bg-primary/20 text-primary">
+                            <Star className="size-3.5 fill-primary text-primary" />
+                          </div>
+                          <div className="min-w-0">
+                            <p className="truncate text-[10px] font-semibold text-primary">Comunidade VIP WhatsApp</p>
+                            <p className="truncate text-[8px] text-muted-foreground">Networking e vagas exclusivas</p>
+                          </div>
                         </div>
-                        <div className="min-w-0 flex-1">
-                          <p className="truncate text-[10px] font-semibold text-foreground">Cursos & Treinamentos</p>
-                          <p className="truncate text-[8px] text-muted-foreground">Do básico ao avançado</p>
-                        </div>
+                        <ArrowRight className="size-3 shrink-0 text-primary" />
                       </div>
                     </div>
 
