@@ -50,6 +50,7 @@ import { Switch } from "@/components/ui/switch";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Textarea } from "@/components/ui/textarea";
 import { StatsPanel } from "@/components/admin/StatsPanel";
+import { MercadoPagoTab } from "@/components/admin/MercadoPagoTab";
 import { supabase } from "@/integrations/supabase/client";
 import {
   CATEGORY_PRESETS,
@@ -170,12 +171,13 @@ function AdminPage() {
       </header>
 
       <Tabs defaultValue="links">
-        <TabsList className={`grid w-full ${isAdmin ? "grid-cols-6" : "grid-cols-5"}`}>
+        <TabsList className={`grid w-full ${isAdmin ? "grid-cols-7" : "grid-cols-5"}`}>
           <TabsTrigger value="links">Links</TabsTrigger>
           <TabsTrigger value="categories">Categorias</TabsTrigger>
           <TabsTrigger value="stats">Estatísticas</TabsTrigger>
           <TabsTrigger value="profile">Perfil</TabsTrigger>
           <TabsTrigger value="subscription">Assinatura</TabsTrigger>
+          {isAdmin ? <TabsTrigger value="mercadopago">💳 Mercado Pago</TabsTrigger> : null}
           {isAdmin ? <TabsTrigger value="superadmin">👑 Super Admin</TabsTrigger> : null}
         </TabsList>
 
@@ -207,11 +209,18 @@ function AdminPage() {
         </TabsContent>
 
         {isAdmin ? (
+          <TabsContent value="mercadopago" className="pt-4">
+            <MercadoPagoTab />
+          </TabsContent>
+        ) : null}
+
+        {isAdmin ? (
           <TabsContent value="superadmin" className="pt-4">
             <SuperAdminTab />
           </TabsContent>
         ) : null}
       </Tabs>
+
     </main>
   );
 }
