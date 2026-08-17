@@ -88,10 +88,11 @@ function LandingPage() {
             <Button variant="ghost" asChild className="hidden sm:inline-flex">
               <RouterLink to="/auth">Entrar</RouterLink>
             </Button>
-            <Button asChild className="rounded-xl shadow-lg shadow-primary/20">
+            <Button asChild size="sm" className="rounded-xl px-3 text-xs shadow-lg shadow-primary/20 sm:px-4 sm:text-sm">
               <RouterLink to="/auth">
-                Começar 7 Dias Grátis
-                <ArrowRight className="ml-1.5 size-4" />
+                <span className="sm:hidden">Começar</span>
+                <span className="hidden sm:inline">Começar 7 Dias Grátis</span>
+                <ArrowRight className="ml-1 size-3 sm:ml-1.5 sm:size-4" />
               </RouterLink>
             </Button>
           </div>
