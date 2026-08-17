@@ -209,8 +209,9 @@ function AdminPage() {
         </div>
       </header>
 
-      <Tabs defaultValue="links">
-        <TabsList className={`grid w-full ${isAdmin ? "grid-cols-7" : "grid-cols-5"}`}>
+      <Tabs defaultValue="links" className="w-full overflow-hidden">
+        <div className="w-full overflow-x-auto pb-2 scrollbar-hide">
+          <TabsList className={`inline-flex min-w-full ${isAdmin ? "w-[700px] sm:w-full" : "w-[500px] sm:w-full"}`}>
           <TabsTrigger value="links">Links</TabsTrigger>
           <TabsTrigger value="categories">Categorias</TabsTrigger>
           <TabsTrigger value="stats">Estatísticas</TabsTrigger>
@@ -219,6 +220,7 @@ function AdminPage() {
           {isAdmin ? <TabsTrigger value="mercadopago">💳 Mercado Pago</TabsTrigger> : null}
           {isAdmin ? <TabsTrigger value="superadmin">👑 Super Admin</TabsTrigger> : null}
         </TabsList>
+        </div>
 
         <TabsContent value="links" className="pt-4">
           <LinksTab
