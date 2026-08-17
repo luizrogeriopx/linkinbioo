@@ -263,15 +263,15 @@ function AuthPage() {
   };
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center px-4 py-12">
+    <main className="flex min-h-screen w-full max-w-full flex-col items-center justify-center overflow-x-hidden px-4 py-12">
       <div className="mb-6 w-full max-w-md">
         <RouterLink to="/" className="inline-flex items-center text-xs font-medium text-muted-foreground hover:text-foreground">
-          <ArrowLeft className="mr-1.5 size-3.5" />
+          <ArrowLeft className="mr-1.5 size-3.5 shrink-0" />
           Voltar para a página inicial
         </RouterLink>
       </div>
 
-      <div className="glass w-full max-w-md rounded-3xl p-8 shadow-2xl">
+      <div className="glass w-full max-w-md rounded-3xl p-6 sm:p-8 shadow-2xl">
         <div className="text-center">
           <h1 className="text-2xl font-bold">Painel {SAAS_CONFIG.name}</h1>
           <p className="mt-1 text-sm text-muted-foreground">

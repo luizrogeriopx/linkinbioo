@@ -175,12 +175,12 @@ function CheckoutPage() {
   };
 
   return (
-    <main className="mx-auto w-full max-w-xl px-4 py-10">
+    <main className="mx-auto w-full max-w-xl overflow-x-hidden px-4 py-8 sm:py-10">
       <RouterLink to="/" className="inline-flex items-center text-xs text-muted-foreground hover:text-foreground">
-        <ArrowLeft className="mr-1.5 size-3.5" /> Voltar
+        <ArrowLeft className="mr-1.5 size-3.5 shrink-0" /> Voltar
       </RouterLink>
 
-      <div className="glass mt-4 rounded-3xl p-6 shadow-2xl">
+      <div className="glass mt-4 rounded-3xl p-5 sm:p-6 shadow-2xl">
         <h1 className="text-2xl font-bold">Checkout Seguro</h1>
         <p className="mt-1 text-sm text-muted-foreground">
           Plano Pro Ilimitado — <span className="font-semibold text-primary">{SAAS_CONFIG.formattedPrice}/mês</span>

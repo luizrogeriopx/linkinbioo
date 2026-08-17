@@ -19,7 +19,7 @@ export function BackToTop() {
       aria-label="Voltar ao topo"
       onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
       className={cn(
-        "fixed bottom-6 right-6 z-40 size-11 rounded-full transition-all duration-300",
+        "fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-40 size-11 rounded-full shadow-lg transition-all duration-300",
         visible ? "opacity-100" : "pointer-events-none translate-y-3 opacity-0",
       )}
     >

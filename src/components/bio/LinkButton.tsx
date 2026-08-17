@@ -47,11 +47,11 @@ export function LinkButton({ link, highlight }: { link: LinkItem; highlight?: bo
         <Icon className="size-5" />
       </span>
       <span className="min-w-0 flex-1">
-        <span className="flex items-center gap-2">
+        <span className="flex min-w-0 items-center gap-2">
           <span className="truncate font-semibold text-foreground">{link.title}</span>
-          {link.is_favorite ? <Star className="size-3.5 fill-current text-accent" /> : null}
+          {link.is_favorite ? <Star className="size-3.5 shrink-0 fill-current text-accent" /> : null}
           {link.is_sponsored ? (
-            <span className="rounded-full bg-accent/20 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-accent">
+            <span className="shrink-0 rounded-full bg-accent/20 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-accent">
               Patrocinado
             </span>
           ) : null}

@@ -171,10 +171,10 @@ function AdminPage() {
   };
 
   return (
-    <main className="mx-auto w-full max-w-5xl px-4 py-8">
-      <header className="mb-6 flex flex-wrap items-center justify-between gap-3">
+    <main className="mx-auto w-full max-w-5xl px-3 sm:px-4 py-6 sm:py-8 overflow-x-hidden">
+      <header className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <div className="flex items-center gap-2">
+          <div className="flex flex-wrap items-center gap-2">
             <h1 className="text-2xl font-bold">Painel</h1>
             {isAdmin ? (
               <Badge className="bg-gradient-to-r from-amber-500 to-orange-500 font-semibold text-white">
@@ -186,39 +186,41 @@ function AdminPage() {
               </Badge>
             )}
           </div>
-          <p className="mt-0.5 text-sm text-muted-foreground">
+          <p className="mt-0.5 text-sm text-muted-foreground break-words">
             Gerencie sua bio exclusiva em{" "}
             <span className="font-mono font-medium text-foreground">{userBioPath}</span>
           </p>
         </div>
 
         <div className="flex flex-wrap items-center gap-2">
-          <Button variant="outline" size="sm" className="rounded-xl" onClick={copyPublicUrl}>
-            <Copy className="mr-1.5 size-3.5" />
+          <Button variant="outline" size="sm" className="rounded-xl text-xs sm:text-sm" onClick={copyPublicUrl}>
+            <Copy className="mr-1.5 size-3.5 shrink-0" />
             Copiar meu link
           </Button>
-          <Button variant="secondary" size="sm" asChild className="rounded-xl" aria-label="Ver minha página pública">
+          <Button variant="secondary" size="sm" asChild className="rounded-xl text-xs sm:text-sm" aria-label="Ver minha página pública">
             <RouterLink to="/$username" params={{ username }} target="_blank">
-              <ExternalLink className="mr-1.5 size-3.5" />
+              <ExternalLink className="mr-1.5 size-3.5 shrink-0" />
               Ver minha bio
             </RouterLink>
           </Button>
           <Button variant="ghost" size="icon" onClick={signOut} aria-label="Sair">
-            <LogOut className="size-4" />
+            <LogOut className="size-4 shrink-0" />
           </Button>
         </div>
       </header>
 
-      <Tabs defaultValue="links">
-        <TabsList className={`grid w-full ${isAdmin ? "grid-cols-7" : "grid-cols-5"}`}>
-          <TabsTrigger value="links">Links</TabsTrigger>
-          <TabsTrigger value="categories">Categorias</TabsTrigger>
-          <TabsTrigger value="stats">Estatísticas</TabsTrigger>
-          <TabsTrigger value="profile">Perfil</TabsTrigger>
-          <TabsTrigger value="subscription">Assinatura</TabsTrigger>
-          {isAdmin ? <TabsTrigger value="mercadopago">💳 Mercado Pago</TabsTrigger> : null}
-          {isAdmin ? <TabsTrigger value="superadmin">👑 Super Admin</TabsTrigger> : null}
-        </TabsList>
+      <Tabs defaultValue="links" className="w-full max-w-full">
+        <div className="w-full overflow-x-auto pb-1.5 scrollbar-none">
+          <TabsList className={`inline-flex h-auto w-max min-w-full p-1 sm:grid sm:h-10 ${isAdmin ? "sm:grid-cols-7" : "sm:grid-cols-5"}`}>
+            <TabsTrigger value="links" className="px-3.5 py-1.5 text-xs sm:text-sm">Links</TabsTrigger>
+            <TabsTrigger value="categories" className="px-3.5 py-1.5 text-xs sm:text-sm">Categorias</TabsTrigger>
+            <TabsTrigger value="stats" className="px-3.5 py-1.5 text-xs sm:text-sm">Estatísticas</TabsTrigger>
+            <TabsTrigger value="profile" className="px-3.5 py-1.5 text-xs sm:text-sm">Perfil</TabsTrigger>
+            <TabsTrigger value="subscription" className="px-3.5 py-1.5 text-xs sm:text-sm">Assinatura</TabsTrigger>
+            {isAdmin ? <TabsTrigger value="mercadopago" className="px-3.5 py-1.5 text-xs sm:text-sm">💳 Mercado Pago</TabsTrigger> : null}
+            {isAdmin ? <TabsTrigger value="superadmin" className="px-3.5 py-1.5 text-xs sm:text-sm">👑 Super Admin</TabsTrigger> : null}
+          </TabsList>
+        </div>
 
         <TabsContent value="links" className="pt-4">
           <LinksTab
@@ -570,14 +572,14 @@ function LinksTab({
             event.target.value = "";
           }}
         />
-        <div className="relative ml-auto min-w-[200px] flex-1">
+        <div className="relative w-full sm:w-auto sm:ml-auto sm:min-w-[200px] flex-1">
           <Search className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
           <Input
             value={search}
             onChange={(event) => setSearch(event.target.value)}
             placeholder="Pesquisar links..."
             aria-label="Pesquisar links"
-            className="pl-9"
+            className="pl-9 w-full"
           />
         </div>
       </div>

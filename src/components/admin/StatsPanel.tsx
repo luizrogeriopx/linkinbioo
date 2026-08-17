@@ -61,7 +61,7 @@ export function StatsPanel({
   );
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-4 w-full max-w-full overflow-hidden">
       <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
         <Stat label="Total de cliques" value={totalClicks} />
         <Stat label="Links" value={links.length} />
@@ -125,7 +125,7 @@ function ChartCard({
   className?: string;
 }) {
   return (
-    <Card className={`glass border-glass-border ${className ?? ""}`}>
+    <Card className={`glass border-glass-border w-full max-w-full overflow-hidden ${className ?? ""}`}>
       <CardHeader className="pb-2">
         <CardTitle className="text-sm font-semibold">{title}</CardTitle>
       </CardHeader>

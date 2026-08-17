@@ -126,13 +126,13 @@ function UserBioPage() {
   }
 
   return (
-    <main className="mx-auto flex min-h-screen w-full max-w-xl flex-col px-4 pb-24 pt-6">
+    <main className="mx-auto flex min-h-screen w-full max-w-xl flex-col overflow-x-hidden px-4 pb-24 pt-6">
       {/* Header do Perfil */}
       <motion.header
         initial={{ opacity: 0, y: 12 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.4 }}
-        className="glass flex flex-col items-center rounded-3xl px-6 py-8 text-center"
+        className="glass flex w-full max-w-full flex-col items-center rounded-3xl px-4 py-8 sm:px-6 text-center"
       >
         <Avatar className="size-24 border-2 border-primary/40 shadow-lg">
           <AvatarImage src={profile.avatar_url ?? undefined} alt={profile.display_name} loading="lazy" />
@@ -140,13 +140,13 @@ function UserBioPage() {
             {profile.display_name.slice(0, 2).toUpperCase()}
           </AvatarFallback>
         </Avatar>
-        <h1 className="mt-4 text-2xl font-bold">{profile.display_name}</h1>
-        <p className="gradient-text text-sm font-semibold">@{profile.username}</p>
+        <h1 className="mt-4 text-2xl font-bold max-w-full break-words">{profile.display_name}</h1>
+        <p className="gradient-text text-sm font-semibold max-w-full break-words">@{profile.username}</p>
         {profile.bio ? (
-          <p className="mt-3 max-w-sm text-sm text-muted-foreground">{profile.bio}</p>
+          <p className="mt-3 max-w-sm text-sm text-muted-foreground break-words">{profile.bio}</p>
         ) : null}
         {Array.isArray(profile.socials) && profile.socials.length > 0 ? (
-          <div className="mt-4 flex flex-wrap items-center justify-center gap-2">
+          <div className="mt-4 flex max-w-full flex-wrap items-center justify-center gap-2">
             {profile.socials.map((social, index) => {
               const Icon = getIcon(social.icon);
               return (
@@ -156,7 +156,7 @@ function UserBioPage() {
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label={social.icon}
-                  className="rounded-xl border border-glass-border p-2.5 text-muted-foreground transition-all hover:-translate-y-0.5 hover:text-primary"
+                  className="rounded-xl border border-glass-border p-2.5 text-muted-foreground transition-all hover:-translate-y-0.5 hover:text-primary shrink-0"
                 >
                   <Icon className="size-4" />
                 </a>
@@ -172,28 +172,28 @@ function UserBioPage() {
           href={profile.banner_url ?? "#"}
           target={profile.banner_url ? "_blank" : undefined}
           rel="noopener noreferrer"
-          className="mt-4 block rounded-2xl bg-[image:var(--gradient-primary)] px-4 py-3 text-center text-sm font-semibold text-primary-foreground shadow-md transition-transform hover:scale-[1.01]"
+          className="mt-4 block w-full max-w-full break-words rounded-2xl bg-[image:var(--gradient-primary)] px-4 py-3 text-center text-sm font-semibold text-primary-foreground shadow-md transition-transform hover:scale-[1.01]"
         >
           {profile.banner_text}
         </a>
       ) : null}
 
       {/* Campo de Busca de Links */}
-      <div className="relative mt-5">
+      <div className="relative mt-5 w-full max-w-full">
         <Search className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
         <Input
           value={search}
           onChange={(event) => setSearch(event.target.value)}
           placeholder="Buscar links..."
           aria-label="Buscar links"
-          className="glass h-12 rounded-2xl border-glass-border pl-10"
+          className="glass h-12 w-full rounded-2xl border-glass-border pl-10"
         />
       </div>
 
       {/* Links em Destaque */}
       {featured.length > 0 ? (
-        <section className="mt-6 space-y-3">
-          <SectionTitle icon={<Sparkles className="size-4 text-accent" />} label="Em destaque" />
+        <section className="mt-6 space-y-3 w-full max-w-full">
+          <SectionTitle icon={<Sparkles className="size-4 text-accent shrink-0" />} label="Em destaque" />
           {featured.map((link) => (
             <LinkButton key={link.id} link={link} highlight />
           ))}
@@ -202,7 +202,7 @@ function UserBioPage() {
 
       {/* Links Favoritos */}
       {favorites.length > 0 ? (
-        <section className="mt-6 space-y-3">
+        <section className="mt-6 space-y-3 w-full max-w-full">
           <SectionTitle label="⭐ Favoritos" />
           {favorites.map((link) => (
             <LinkButton key={link.id} link={link} />
@@ -214,7 +214,7 @@ function UserBioPage() {
       <Accordion
         type="multiple"
         defaultValue={term ? categories.map((c) => c.id) : []}
-        className="mt-6 space-y-3"
+        className="mt-6 space-y-3 w-full max-w-full"
       >
         {categories.map((category) => {
           const items = filtered.filter((l) => l.category_id === category.id);
@@ -223,13 +223,13 @@ function UserBioPage() {
             <AccordionItem
               key={category.id}
               value={category.id}
-              className="glass overflow-hidden rounded-2xl border-glass-border px-4"
+              className="glass overflow-hidden rounded-2xl border-glass-border px-3 sm:px-4"
             >
               <AccordionTrigger className="py-4 hover:no-underline">
-                <span className="flex items-center gap-2 font-semibold">
-                  <span aria-hidden>{category.emoji}</span>
-                  {category.title}
-                  <span className="rounded-full bg-secondary px-2 py-0.5 text-xs text-muted-foreground">
+                <span className="flex min-w-0 items-center gap-2 font-semibold text-left">
+                  <span aria-hidden className="shrink-0">{category.emoji}</span>
+                  <span className="truncate">{category.title}</span>
+                  <span className="shrink-0 rounded-full bg-secondary px-2 py-0.5 text-xs text-muted-foreground">
                     {items.length}
                   </span>
                 </span>
@@ -251,7 +251,7 @@ function UserBioPage() {
         const uncategorized = filtered.filter((l) => !l.category_id && !l.is_featured && !l.is_favorite);
         if (uncategorized.length === 0) return null;
         return (
-          <section className="mt-6 space-y-3">
+          <section className="mt-6 space-y-3 w-full max-w-full">
             <SectionTitle label="Outros links" />
             {uncategorized.map((link) => (
               <LinkButton key={link.id} link={link} />
@@ -272,7 +272,7 @@ function UserBioPage() {
           to="/"
           className="inline-flex items-center gap-1.5 rounded-full border border-glass-border bg-glass px-3.5 py-1.5 text-[11px] font-medium text-foreground transition-colors hover:border-primary/40 hover:text-primary"
         >
-          <Zap className="size-3 text-primary" />
+          <Zap className="size-3 text-primary shrink-0" />
           © 2026 • Feito Com LinkBioPro
         </RouterLink>
       </footer>
