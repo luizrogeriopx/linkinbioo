@@ -107,7 +107,7 @@ function LandingPage() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5 }}
-              className="space-y-6 text-center lg:col-span-7 lg:text-left"
+              className="w-full space-y-6 text-center lg:col-span-7 lg:text-left"
             >
               <div className="inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/10 px-3.5 py-1.5 text-xs font-semibold text-primary">
                 <Sparkles className="size-3.5" />
@@ -124,7 +124,7 @@ function LandingPage() {
               </p>
 
               {/* Botões CTA */}
-              <div className="flex flex-col gap-3.5 sm:flex-row sm:items-center lg:justify-start">
+              <div className="flex w-full flex-col gap-3.5 sm:flex-row sm:items-center lg:justify-start">
                 <Button size="lg" asChild className="h-13 rounded-2xl px-7 text-base font-semibold shadow-xl shadow-primary/25">
                   <RouterLink to="/auth">
                     Começar 7 Dias Grátis

@@ -109,8 +109,12 @@ function AdminPage() {
       if (!profile) {
         const meta = user.user_metadata || {};
         const baseName =
-          meta.display_name || meta.full_name || meta.name || user.email?.split("@")[0] || "Meu Perfil";
-        const baseUsername = (meta.username || user.email?.split("@")[0] || "usuario")
+          (meta["display_name"] as string) ||
+          (meta["full_name"] as string) ||
+          (meta["name"] as string) ||
+          user.email?.split("@")[0] ||
+          "Meu Perfil";
+        const baseUsername = ((meta["username"] as string) || user.email?.split("@")[0] || "usuario")
           .toLowerCase()
           .replace(/[^a-z0-9_]/g, "");
 
@@ -209,8 +213,9 @@ function AdminPage() {
         </div>
       </header>
 
-      <Tabs defaultValue="links">
-        <TabsList className={`grid w-full ${isAdmin ? "grid-cols-7" : "grid-cols-5"}`}>
+      <Tabs defaultValue="links" className="w-full overflow-hidden">
+        <div className="w-full overflow-x-auto pb-2 scrollbar-hide">
+          <TabsList className={`inline-flex min-w-full ${isAdmin ? "w-[700px] sm:w-full" : "w-[500px] sm:w-full"}`}>
           <TabsTrigger value="links">Links</TabsTrigger>
           <TabsTrigger value="categories">Categorias</TabsTrigger>
           <TabsTrigger value="stats">Estatísticas</TabsTrigger>
@@ -219,6 +224,7 @@ function AdminPage() {
           {isAdmin ? <TabsTrigger value="mercadopago">💳 Mercado Pago</TabsTrigger> : null}
           {isAdmin ? <TabsTrigger value="superadmin">👑 Super Admin</TabsTrigger> : null}
         </TabsList>
+        </div>
 
         <TabsContent value="links" className="pt-4">
           <LinksTab
@@ -1006,7 +1012,7 @@ function ProfileTab({
           {socials.map((social, index) => {
             const currentOption =
               SOCIAL_OPTIONS.find((o) => o.value.toLowerCase() === social.icon.toLowerCase()) ??
-              SOCIAL_OPTIONS[0];
+              SOCIAL_OPTIONS[0]!;
             return (
               <div key={index} className="flex flex-wrap sm:flex-nowrap items-center gap-2">
                 <Select
