@@ -175,7 +175,7 @@ function AdminPage() {
   };
 
   return (
-    <main className="mx-auto w-full max-w-5xl px-4 py-8">
+    <main className="mx-auto w-full max-w-5xl overflow-x-hidden px-4 py-8">
       <header className="mb-6 flex flex-wrap items-center justify-between gap-3">
         <div>
           <div className="flex items-center gap-2">
@@ -214,7 +214,7 @@ function AdminPage() {
       </header>
 
       <Tabs defaultValue="links" className="w-full overflow-hidden">
-        <div className="w-full overflow-x-auto pb-2 scrollbar-hide">
+        <div className="w-full overflow-x-auto pb-4 scrollbar-hide">
           <TabsList className={`inline-flex min-w-full ${isAdmin ? "w-[700px] sm:w-full" : "w-[500px] sm:w-full"}`}>
           <TabsTrigger value="links">Links</TabsTrigger>
           <TabsTrigger value="categories">Categorias</TabsTrigger>
