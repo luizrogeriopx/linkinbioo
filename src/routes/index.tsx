@@ -88,10 +88,11 @@ function LandingPage() {
             <Button variant="ghost" asChild className="hidden sm:inline-flex">
               <RouterLink to="/auth">Entrar</RouterLink>
             </Button>
-            <Button asChild className="rounded-xl shadow-lg shadow-primary/20">
+            <Button asChild size="sm" className="rounded-xl px-3 text-xs shadow-lg shadow-primary/20 sm:px-4 sm:text-sm">
               <RouterLink to="/auth">
-                Começar 7 Dias Grátis
-                <ArrowRight className="ml-1.5 size-4" />
+                <span className="sm:hidden">Começar</span>
+                <span className="hidden sm:inline">Começar 7 Dias Grátis</span>
+                <ArrowRight className="ml-1 size-3 sm:ml-1.5 sm:size-4" />
               </RouterLink>
             </Button>
           </div>
@@ -109,29 +110,29 @@ function LandingPage() {
               transition={{ duration: 0.5 }}
               className="w-full space-y-6 text-center lg:col-span-7 lg:text-left"
             >
-              <div className="inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/10 px-3.5 py-1.5 text-xs font-semibold text-primary">
-                <Sparkles className="size-3.5" />
-                7 Dias Grátis • Todas as Funções Liberadas
+              <div className="inline-flex max-w-[90%] items-center gap-2 rounded-full border border-primary/30 bg-primary/10 px-3.5 py-1.5 text-xs font-semibold text-primary sm:max-w-none">
+                <Sparkles className="size-3.5 shrink-0" />
+                <span className="truncate">7 Dias Grátis • Todas as Funções Liberadas</span>
               </div>
 
-              <h1 className="text-4xl font-extrabold tracking-tight sm:text-5xl lg:text-6xl">
+              <h1 className="break-words text-4xl font-extrabold tracking-tight sm:text-5xl lg:text-6xl">
                 Transforme seguidores em clientes com a bio mais{" "}
                 <span className="gradient-text">elegante e lucrativa</span>.
               </h1>
 
-              <p className="text-base text-muted-foreground sm:text-lg">
+              <p className="mx-auto max-w-sm text-base text-muted-foreground sm:max-w-none sm:text-lg">
                 Organize centenas de ofertas de afiliado, cursos, redes sociais e produtos digitais em categorias expansíveis com design Glassmorphism e alta conversão.
               </p>
 
               {/* Botões CTA */}
-              <div className="flex w-full flex-col gap-3.5 sm:flex-row sm:items-center lg:justify-start">
-                <Button size="lg" asChild className="h-13 rounded-2xl px-7 text-base font-semibold shadow-xl shadow-primary/25">
+              <div className="flex w-full flex-col gap-3.5 px-4 sm:flex-row sm:items-center sm:px-0 lg:justify-start">
+                <Button size="lg" asChild className="h-13 w-full rounded-2xl px-7 text-base font-semibold shadow-xl shadow-primary/25 sm:w-auto">
                   <RouterLink to="/auth">
                     Começar 7 Dias Grátis
                     <ArrowRight className="ml-2 size-5" />
                   </RouterLink>
                 </Button>
-                <Button size="lg" variant="outline" asChild className="h-13 rounded-2xl border-glass-border bg-glass px-6 text-base font-semibold">
+                <Button size="lg" variant="outline" asChild className="h-13 w-full rounded-2xl border-glass-border bg-glass px-6 text-base font-semibold sm:w-auto">
                   <RouterLink to="/$username" params={{ username: "luizrogeriopaixao" }}>
                     <ExternalLink className="mr-2 size-4" />
                     Ver Exemplo Real (@luizrogeriopaixao)
