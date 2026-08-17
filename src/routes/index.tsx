@@ -114,7 +114,7 @@ function LandingPage() {
                 7 Dias Grátis • Todas as Funções Liberadas
               </div>
 
-              <h1 className="text-4xl font-extrabold tracking-tight sm:text-5xl lg:text-6xl">
+              <h1 className="text-4xl font-extrabold tracking-tight break-words sm:text-5xl lg:text-6xl">
                 Transforme seguidores em clientes com a bio mais{" "}
                 <span className="gradient-text">elegante e lucrativa</span>.
               </h1>
