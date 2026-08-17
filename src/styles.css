@@ -208,6 +208,13 @@
   box-shadow: var(--shadow-glow);
 }
 
+@utility scrollbar-hide {
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
 /* Mascarar botão/badge "Edit with Lovable" */
 #lovable-badge,
 #lovable-badge-container,

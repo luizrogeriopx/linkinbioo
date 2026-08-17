@@ -109,8 +109,12 @@ function AdminPage() {
       if (!profile) {
         const meta = user.user_metadata || {};
         const baseName =
-          meta.display_name || meta.full_name || meta.name || user.email?.split("@")[0] || "Meu Perfil";
-        const baseUsername = (meta.username || user.email?.split("@")[0] || "usuario")
+          (meta["display_name"] as string) ||
+          (meta["full_name"] as string) ||
+          (meta["name"] as string) ||
+          user.email?.split("@")[0] ||
+          "Meu Perfil";
+        const baseUsername = ((meta["username"] as string) || user.email?.split("@")[0] || "usuario")
           .toLowerCase()
           .replace(/[^a-z0-9_]/g, "");
 
@@ -1008,7 +1012,7 @@ function ProfileTab({
           {socials.map((social, index) => {
             const currentOption =
               SOCIAL_OPTIONS.find((o) => o.value.toLowerCase() === social.icon.toLowerCase()) ??
-              SOCIAL_OPTIONS[0];
+              SOCIAL_OPTIONS[0]!;
             return (
               <div key={index} className="flex flex-wrap sm:flex-nowrap items-center gap-2">
                 <Select

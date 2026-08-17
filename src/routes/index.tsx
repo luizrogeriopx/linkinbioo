@@ -88,11 +88,11 @@ function LandingPage() {
             <Button variant="ghost" asChild className="hidden sm:inline-flex">
               <RouterLink to="/auth">Entrar</RouterLink>
             </Button>
-            <Button asChild className="rounded-xl shadow-lg shadow-primary/20 text-xs sm:text-sm px-3.5 sm:px-4 py-2 shrink-0">
+            <Button asChild size="sm" className="rounded-xl px-3 sm:px-4 py-2 text-xs sm:text-sm shadow-lg shadow-primary/20 shrink-0">
               <RouterLink to="/auth">
+                <span className="sm:hidden">Começar</span>
                 <span className="hidden sm:inline">Começar 7 Dias Grátis</span>
-                <span className="sm:hidden">Começar Grátis</span>
-                <ArrowRight className="ml-1.5 size-3.5 sm:size-4 shrink-0" />
+                <ArrowRight className="ml-1 sm:ml-1.5 size-3.5 sm:size-4 shrink-0" />
               </RouterLink>
             </Button>
           </div>
@@ -108,24 +108,24 @@ function LandingPage() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5 }}
-              className="space-y-6 text-center lg:col-span-7 lg:text-left"
+              className="w-full space-y-6 text-center lg:col-span-7 lg:text-left"
             >
-              <div className="inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/10 px-3.5 py-1.5 text-xs font-semibold text-primary">
-                <Sparkles className="size-3.5" />
-                7 Dias Grátis • Todas as Funções Liberadas
+              <div className="inline-flex max-w-[90%] items-center gap-2 rounded-full border border-primary/30 bg-primary/10 px-3.5 py-1.5 text-xs font-semibold text-primary sm:max-w-none">
+                <Sparkles className="size-3.5 shrink-0" />
+                <span className="truncate">7 Dias Grátis • Todas as Funções Liberadas</span>
               </div>
 
-              <h1 className="text-3xl font-extrabold tracking-tight sm:text-5xl lg:text-6xl">
+              <h1 className="break-words text-3xl font-extrabold tracking-tight sm:text-5xl lg:text-6xl">
                 Transforme seguidores em clientes com a bio mais{" "}
                 <span className="gradient-text">elegante e lucrativa</span>.
               </h1>
 
-              <p className="text-sm text-muted-foreground sm:text-lg">
+              <p className="mx-auto max-w-sm text-sm text-muted-foreground sm:max-w-none sm:text-lg">
                 Organize centenas de ofertas de afiliado, cursos, redes sociais e produtos digitais em categorias expansíveis com design Glassmorphism e alta conversão.
               </p>
 
               {/* Botões CTA */}
-              <div className="flex flex-col gap-3 sm:flex-row sm:items-center lg:justify-start">
+              <div className="flex w-full flex-col gap-3 sm:flex-row sm:items-center lg:justify-start">
                 <Button size="lg" asChild className="h-auto min-h-12 sm:h-13 w-full sm:w-auto rounded-2xl px-6 py-3 text-sm sm:text-base font-semibold shadow-xl shadow-primary/25 text-center">
                   <RouterLink to="/auth">
                     <span>Começar 7 Dias Grátis</span>
@@ -159,7 +159,7 @@ function LandingPage() {
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.6, delay: 0.2 }}
-              className="flex justify-center w-full max-w-full px-2 lg:col-span-5"
+              className="flex w-full max-w-full justify-center overflow-hidden px-2 lg:col-span-5"
             >
               <div className="relative mx-auto w-full max-w-[285px] rounded-[42px] border-[7px] border-zinc-800 bg-[#090b10] p-1.5 shadow-[0_25px_60px_-15px_rgba(0,0,0,0.85),0_0_35px_rgba(59,130,246,0.15)] ring-1 ring-white/20">
                 {/* Botões Laterais Samsung (Volume, Bixby, Power) */}
@@ -376,7 +376,7 @@ function LandingPage() {
             </p>
           </div>
 
-          <div className="mx-auto grid max-w-4xl gap-8 lg:grid-cols-2">
+          <div className="mx-auto grid max-w-4xl gap-8 px-2 sm:px-0 lg:grid-cols-2">
             {/* PLANO 1: 7 DIAS GRÁTIS */}
             <div className="relative flex flex-col justify-between rounded-3xl border border-glass-border bg-card/70 p-6 sm:p-8 shadow-xl backdrop-blur-md transition-all hover:border-primary/40">
               <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 max-w-[90%] truncate rounded-full border border-border bg-secondary px-3 sm:px-4 py-1 text-[11px] sm:text-xs font-bold uppercase tracking-wider text-foreground shadow-sm">
