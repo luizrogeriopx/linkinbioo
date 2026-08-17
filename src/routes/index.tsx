@@ -110,9 +110,9 @@ function LandingPage() {
               transition={{ duration: 0.5 }}
               className="w-full space-y-6 text-center lg:col-span-7 lg:text-left"
             >
-              <div className="inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/10 px-3.5 py-1.5 text-xs font-semibold text-primary">
-                <Sparkles className="size-3.5" />
-                7 Dias Grátis • Todas as Funções Liberadas
+              <div className="inline-flex max-w-[90%] items-center gap-2 rounded-full border border-primary/30 bg-primary/10 px-3.5 py-1.5 text-xs font-semibold text-primary sm:max-w-none">
+                <Sparkles className="size-3.5 shrink-0" />
+                <span className="truncate">7 Dias Grátis • Todas as Funções Liberadas</span>
               </div>
 
               <h1 className="text-4xl font-extrabold tracking-tight break-words sm:text-5xl lg:text-6xl">
