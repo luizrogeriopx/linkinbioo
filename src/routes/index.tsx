@@ -56,7 +56,7 @@ function LandingPage() {
   const [activeTab, setActiveTab] = useState<"afiliados" | "criadores" | "empresas">("afiliados");
 
   return (
-    <div className="flex min-h-screen flex-col selection:bg-primary selection:text-primary-foreground">
+    <div className="flex min-h-screen w-full flex-col overflow-x-hidden selection:bg-primary selection:text-primary-foreground">
       {/* 1. Header / Navbar */}
       <header className="sticky top-0 z-50 border-b border-glass-border bg-background/80 backdrop-blur-xl">
         <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4 sm:px-6">
@@ -115,7 +115,7 @@ function LandingPage() {
                 <span className="truncate">7 Dias Grátis • Todas as Funções Liberadas</span>
               </div>
 
-              <h1 className="break-words text-4xl font-extrabold tracking-tight sm:text-5xl lg:text-6xl">
+              <h1 className="hyphens-auto break-words text-4xl font-extrabold tracking-tight sm:text-5xl lg:text-6xl">
                 Transforme seguidores em clientes com a bio mais{" "}
                 <span className="gradient-text">elegante e lucrativa</span>.
               </h1>
@@ -159,9 +159,9 @@ function LandingPage() {
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.6, delay: 0.2 }}
-              className="flex justify-center lg:col-span-5"
+              className="flex w-full max-w-full justify-center overflow-hidden lg:col-span-5"
             >
-              <div className="relative mx-auto w-[285px] rounded-[42px] border-[7px] border-zinc-800 bg-[#090b10] p-1.5 shadow-[0_25px_60px_-15px_rgba(0,0,0,0.85),0_0_35px_rgba(59,130,246,0.15)] ring-1 ring-white/20">
+              <div className="relative mx-auto w-full max-w-[285px] rounded-[42px] border-[7px] border-zinc-800 bg-[#090b10] p-1.5 shadow-[0_25px_60px_-15px_rgba(0,0,0,0.85),0_0_35px_rgba(59,130,246,0.15)] ring-1 ring-white/20">
                 {/* Botões Laterais Samsung (Volume, Bixby, Power) */}
                 <div className="absolute -left-[9px] top-24 h-12 w-[3px] rounded-l-sm bg-zinc-600 dark:bg-zinc-500" />
                 <div className="absolute -left-[9px] top-40 h-7 w-[3px] rounded-l-sm bg-zinc-600 dark:bg-zinc-500" />
@@ -295,7 +295,7 @@ function LandingPage() {
 
       {/* 3. Social Proof / Metrics */}
       <section className="border-y border-glass-border bg-card/30 py-10 backdrop-blur-md">
-        <div className="mx-auto grid max-w-6xl grid-cols-2 gap-8 px-4 text-center sm:px-6 md:grid-cols-4">
+        <div className="mx-auto grid max-w-6xl grid-cols-1 gap-8 px-4 text-center sm:grid-cols-2 sm:px-6 md:grid-cols-4">
           <div>
             <p className="font-display text-3xl font-extrabold text-foreground sm:text-4xl">+50.000</p>
             <p className="mt-1 text-xs font-medium uppercase tracking-wider text-muted-foreground">Links Gerados</p>
@@ -376,7 +376,7 @@ function LandingPage() {
             </p>
           </div>
 
-          <div className="mx-auto grid max-w-4xl gap-8 lg:grid-cols-2">
+          <div className="mx-auto grid max-w-4xl gap-8 px-2 sm:px-0 lg:grid-cols-2">
             {/* PLANO 1: 7 DIAS GRÁTIS */}
             <div className="relative flex flex-col justify-between rounded-3xl border border-glass-border bg-card/70 p-8 shadow-xl backdrop-blur-md transition-all hover:border-primary/40">
               <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 rounded-full border border-border bg-secondary px-4 py-1 text-xs font-bold uppercase tracking-wider text-foreground shadow-sm">
@@ -535,7 +535,7 @@ function LandingPage() {
 
       {/* 7. Final Call to Action */}
       <section className="px-4 pb-20 sm:px-6">
-        <div className="mx-auto max-w-5xl rounded-3xl bg-gradient-to-br from-primary/90 via-primary to-accent p-8 text-center text-primary-foreground shadow-2xl sm:p-14">
+        <div className="mx-auto max-w-5xl rounded-3xl bg-gradient-to-br from-primary/90 via-primary to-accent p-6 text-center text-primary-foreground shadow-2xl sm:p-14">
           <h2 className="text-3xl font-extrabold sm:text-4xl">
             Pronto para profissionalizar sua bio hoje?
           </h2>
