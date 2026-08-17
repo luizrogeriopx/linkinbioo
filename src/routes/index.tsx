@@ -119,7 +119,7 @@ function LandingPage() {
                 <span className="gradient-text">elegante e lucrativa</span>.
               </h1>
 
-              <p className="text-base text-muted-foreground sm:text-lg">
+              <p className="mx-auto max-w-sm text-base text-muted-foreground sm:max-w-none sm:text-lg">
                 Organize centenas de ofertas de afiliado, cursos, redes sociais e produtos digitais em categorias expansíveis com design Glassmorphism e alta conversão.
               </p>
 
