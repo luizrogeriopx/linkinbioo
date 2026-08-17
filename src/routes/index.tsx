@@ -124,14 +124,14 @@ function LandingPage() {
               </p>
 
               {/* Botões CTA */}
-              <div className="flex w-full flex-col gap-3.5 sm:flex-row sm:items-center lg:justify-start">
-                <Button size="lg" asChild className="h-13 rounded-2xl px-7 text-base font-semibold shadow-xl shadow-primary/25">
+              <div className="flex w-full flex-col gap-3.5 px-4 sm:flex-row sm:items-center sm:px-0 lg:justify-start">
+                <Button size="lg" asChild className="h-13 w-full rounded-2xl px-7 text-base font-semibold shadow-xl shadow-primary/25 sm:w-auto">
                   <RouterLink to="/auth">
                     Começar 7 Dias Grátis
                     <ArrowRight className="ml-2 size-5" />
                   </RouterLink>
                 </Button>
-                <Button size="lg" variant="outline" asChild className="h-13 rounded-2xl border-glass-border bg-glass px-6 text-base font-semibold">
+                <Button size="lg" variant="outline" asChild className="h-13 w-full rounded-2xl border-glass-border bg-glass px-6 text-base font-semibold sm:w-auto">
                   <RouterLink to="/$username" params={{ username: "luizrogeriopaixao" }}>
                     <ExternalLink className="mr-2 size-4" />
                     Ver Exemplo Real (@luizrogeriopaixao)
