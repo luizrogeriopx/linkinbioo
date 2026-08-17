@@ -376,7 +376,7 @@ function LandingPage() {
             </p>
           </div>
 
-          <div className="mx-auto grid max-w-4xl gap-8 lg:grid-cols-2">
+          <div className="mx-auto grid max-w-4xl gap-8 px-2 sm:px-0 lg:grid-cols-2">
             {/* PLANO 1: 7 DIAS GRÁTIS */}
             <div className="relative flex flex-col justify-between rounded-3xl border border-glass-border bg-card/70 p-8 shadow-xl backdrop-blur-md transition-all hover:border-primary/40">
               <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 rounded-full border border-border bg-secondary px-4 py-1 text-xs font-bold uppercase tracking-wider text-foreground shadow-sm">
@@ -535,7 +535,7 @@ function LandingPage() {
 
       {/* 7. Final Call to Action */}
       <section className="px-4 pb-20 sm:px-6">
-        <div className="mx-auto max-w-5xl rounded-3xl bg-gradient-to-br from-primary/90 via-primary to-accent p-8 text-center text-primary-foreground shadow-2xl sm:p-14">
+        <div className="mx-auto max-w-5xl rounded-3xl bg-gradient-to-br from-primary/90 via-primary to-accent p-6 text-center text-primary-foreground shadow-2xl sm:p-14">
           <h2 className="text-3xl font-extrabold sm:text-4xl">
             Pronto para profissionalizar sua bio hoje?
           </h2>
