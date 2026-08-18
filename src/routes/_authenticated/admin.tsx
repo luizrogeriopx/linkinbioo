@@ -22,6 +22,7 @@ import {
   Trash2,
   TrendingUp,
   Upload,
+  UserPlus,
   Users,
   Zap,
 } from "lucide-react";
@@ -51,6 +52,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Textarea } from "@/components/ui/textarea";
 import { StatsPanel } from "@/components/admin/StatsPanel";
 import { MercadoPagoTab } from "@/components/admin/MercadoPagoTab";
+import { CloneUserModal } from "@/components/admin/CloneUserModal";
 import { supabase } from "@/integrations/supabase/client";
 import {
   CATEGORY_PRESETS,
@@ -1200,7 +1202,10 @@ function SubscriptionTab({ profile }: { profile: Profile | null }) {
 /* ---------------- Aba de Super Admin ---------------- */
 
 function SuperAdminTab() {
+  const queryClient = useQueryClient();
   const [searchTerm, setSearchTerm] = useState("");
+  const [cloneModalOpen, setCloneModalOpen] = useState(false);
+  const [userToClone, setUserToClone] = useState<Profile | null>(null);
 
   const { data: adminStats, isLoading } = useQuery({
     queryKey: ["super-admin-stats"],
@@ -1295,15 +1300,28 @@ function SuperAdminTab() {
           <div className="flex flex-wrap items-center justify-between gap-3">
             <div>
               <CardTitle className="text-lg font-bold">Usuários do SaaS ({filteredUsers.length})</CardTitle>
-              <p className="text-xs text-muted-foreground">Acompanhe todos os clientes e links da plataforma.</p>
+              <p className="text-xs text-muted-foreground">Acompanhe e gerencie todos os clientes e links da plataforma.</p>
             </div>
-            <div className="w-full max-w-xs">
-              <Input
-                placeholder="Buscar usuário ou @username..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="h-9 text-xs"
-              />
+            <div className="flex flex-wrap items-center gap-2">
+              <Button
+                size="sm"
+                className="h-9 rounded-xl text-xs gap-1.5 bg-gradient-to-r from-primary to-accent font-semibold shadow-sm"
+                onClick={() => {
+                  setUserToClone(null);
+                  setCloneModalOpen(true);
+                }}
+              >
+                <UserPlus className="size-3.5" />
+                Clonar Conta
+              </Button>
+              <div className="w-full sm:w-56">
+                <Input
+                  placeholder="Buscar @username ou nome..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className="h-9 text-xs rounded-xl"
+                />
+              </div>
             </div>
           </div>
         </CardHeader>
@@ -1332,13 +1350,25 @@ function SuperAdminTab() {
                     </div>
                   </div>
 
-                  <div className="flex items-center gap-3">
+                  <div className="flex flex-wrap items-center gap-2">
                     <Badge variant="outline" className="text-[11px] border-emerald-500/30 text-emerald-400">
                       {user.plan?.toUpperCase() ?? "PRO"} • {SAAS_CONFIG.formattedPrice}/mês
                     </Badge>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      className="rounded-xl text-xs gap-1 border-primary/30 text-primary hover:bg-primary/10"
+                      onClick={() => {
+                        setUserToClone(user);
+                        setCloneModalOpen(true);
+                      }}
+                    >
+                      <Copy className="size-3 shrink-0" />
+                      Clonar
+                    </Button>
                     <Button variant="ghost" size="sm" asChild className="rounded-xl text-xs">
                       <RouterLink to="/$username" params={{ username: user.username }} target="_blank">
-                        <ExternalLink className="mr-1 size-3.5" />
+                        <ExternalLink className="mr-1 size-3.5 shrink-0" />
                         Ver Bio
                       </RouterLink>
                     </Button>
@@ -1349,6 +1379,18 @@ function SuperAdminTab() {
           </div>
         </CardContent>
       </Card>
+
+      {/* Modal de Clonagem de Usuário */}
+      <CloneUserModal
+        open={cloneModalOpen}
+        onOpenChange={setCloneModalOpen}
+        sourceUser={userToClone}
+        allUsers={adminStats.profiles}
+        onSuccess={() => {
+          void queryClient.invalidateQueries({ queryKey: ["super-admin-stats"] });
+          void queryClient.invalidateQueries({ queryKey: ["admin-data"] });
+        }}
+      />
     </div>
   );
 }
