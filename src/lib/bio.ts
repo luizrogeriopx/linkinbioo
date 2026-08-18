@@ -15,7 +15,7 @@ export type Profile = {
   is_primary: boolean;
   role?: "admin" | "user";
   plan?: "pro" | "free";
-  subscription_status?: "active" | "trialing" | "canceled" | "past_due";
+  subscription_status?: "active" | "trialing" | "canceled" | "past_due" | "blocked";
   trial_ends_at?: string | null;
   created_at?: string;
   updated_at?: string;

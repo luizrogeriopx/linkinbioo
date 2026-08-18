@@ -4,8 +4,10 @@ import { useMemo, useRef, useState } from "react";
 import {
   ArrowDown,
   ArrowUp,
+  Ban,
   Camera,
   Check,
+  CheckCircle2,
   Copy,
   CreditCard,
   DollarSign,
@@ -17,6 +19,7 @@ import {
   Pencil,
   Plus,
   Search,
+  ShieldAlert,
   ShieldCheck,
   Sparkles,
   Trash2,
@@ -38,6 +41,16 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import {
@@ -53,6 +66,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { StatsPanel } from "@/components/admin/StatsPanel";
 import { MercadoPagoTab } from "@/components/admin/MercadoPagoTab";
 import { CloneUserModal } from "@/components/admin/CloneUserModal";
+import { deleteUserAccount, toggleBlockUser } from "@/lib/admin-actions";
 import { supabase } from "@/integrations/supabase/client";
 import {
   CATEGORY_PRESETS,
@@ -169,6 +183,7 @@ function AdminPage() {
   const username = profile?.username || "usuario";
   const userBioPath = `/${username}`;
   const isAdmin = profile?.role === "admin" || profile?.username === SAAS_CONFIG.adminUsername;
+  const isBlocked = profile?.subscription_status === "blocked" && !isAdmin;
 
   const copyPublicUrl = () => {
     const fullUrl = `${window.location.origin}${userBioPath}`;
@@ -185,6 +200,10 @@ function AdminPage() {
             {isAdmin ? (
               <Badge className="bg-gradient-to-r from-amber-500 to-orange-500 font-semibold text-white">
                 👑 Super Admin
+              </Badge>
+            ) : isBlocked ? (
+              <Badge className="bg-rose-500/20 text-rose-400 border border-rose-500/30">
+                🚫 Conta Suspensa
               </Badge>
             ) : (
               <Badge variant="secondary" className="border border-primary/30 text-primary">
@@ -214,6 +233,18 @@ function AdminPage() {
           </Button>
         </div>
       </header>
+
+      {isBlocked ? (
+        <div className="mb-6 flex items-start gap-3 rounded-2xl border border-rose-500/30 bg-rose-500/10 p-4 text-rose-300">
+          <ShieldAlert className="mt-0.5 size-5 shrink-0 text-rose-400" />
+          <div>
+            <h3 className="text-sm font-semibold text-rose-200">Sua conta foi temporariamente suspensa</h3>
+            <p className="mt-0.5 text-xs text-rose-300/80">
+              Sua página pública de links e as edições no painel foram desativadas pela administração. Entre em contato com o suporte para reativação.
+            </p>
+          </div>
+        </div>
+      ) : null}
 
       <Tabs defaultValue="links" className="w-full max-w-full">
         <div className="w-full overflow-x-auto pb-1.5 scrollbar-none">
@@ -1207,6 +1238,11 @@ function SuperAdminTab() {
   const [cloneModalOpen, setCloneModalOpen] = useState(false);
   const [userToClone, setUserToClone] = useState<Profile | null>(null);
 
+  // Estados para bloqueio e exclusão
+  const [userToDelete, setUserToDelete] = useState<Profile | null>(null);
+  const [isDeleting, setIsDeleting] = useState(false);
+  const [isBlockingId, setIsBlockingId] = useState<string | null>(null);
+
   const { data: adminStats, isLoading } = useQuery({
     queryKey: ["super-admin-stats"],
     queryFn: async () => {
@@ -1238,6 +1274,45 @@ function SuperAdminTab() {
   if (isLoading || !adminStats) {
     return <div className="h-48 w-full animate-pulse rounded-3xl bg-muted" />;
   }
+
+  const handleToggleBlock = async (targetUser: Profile) => {
+    const willBlock = targetUser.subscription_status !== "blocked";
+    setIsBlockingId(targetUser.user_id);
+    try {
+      const result = await toggleBlockUser(targetUser.user_id, willBlock);
+      if (result.success) {
+        toast.success(
+          willBlock
+            ? `Conta @${targetUser.username} bloqueada com sucesso!`
+            : `Conta @${targetUser.username} desbloqueada com sucesso!`
+        );
+        void queryClient.invalidateQueries({ queryKey: ["super-admin-stats"] });
+        void queryClient.invalidateQueries({ queryKey: ["admin-data"] });
+      }
+    } catch (err: any) {
+      toast.error(err.message || "Erro ao alterar status de bloqueio.");
+    } finally {
+      setIsBlockingId(null);
+    }
+  };
+
+  const handleDeleteUser = async () => {
+    if (!userToDelete) return;
+    setIsDeleting(true);
+    try {
+      const result = await deleteUserAccount(userToDelete.user_id);
+      if (result.success) {
+        toast.success(`Conta @${userToDelete.username} excluída com sucesso!`);
+        setUserToDelete(null);
+        void queryClient.invalidateQueries({ queryKey: ["super-admin-stats"] });
+        void queryClient.invalidateQueries({ queryKey: ["admin-data"] });
+      }
+    } catch (err: any) {
+      toast.error(err.message || "Erro ao excluir conta do usuário.");
+    } finally {
+      setIsDeleting(false);
+    }
+  };
 
   const filteredUsers = adminStats.profiles.filter((p) =>
     `${p.display_name} ${p.username}`.toLowerCase().includes(searchTerm.toLowerCase())
@@ -1330,51 +1405,115 @@ function SuperAdminTab() {
             {filteredUsers.length === 0 ? (
               <p className="p-6 text-center text-xs text-muted-foreground">Nenhum usuário encontrado.</p>
             ) : (
-              filteredUsers.map((user) => (
-                <div key={user.id} className="flex flex-wrap items-center justify-between gap-3 p-3.5 hover:bg-card/40 transition-colors">
-                  <div className="flex items-center gap-3">
-                    <Avatar className="size-10 border border-primary/30">
-                      <AvatarImage src={user.avatar_url ?? undefined} alt={user.display_name} />
-                      <AvatarFallback className="text-xs font-semibold">
-                        {user.display_name.slice(0, 2).toUpperCase()}
-                      </AvatarFallback>
-                    </Avatar>
-                    <div>
-                      <p className="text-sm font-semibold flex items-center gap-2">
-                        {user.display_name}
-                        {user.role === "admin" || user.username === SAAS_CONFIG.adminUsername ? (
-                          <Badge className="bg-amber-500/20 text-amber-300 text-[10px] py-0 px-1.5">Admin</Badge>
-                        ) : null}
-                      </p>
-                      <p className="text-xs text-muted-foreground">@{user.username}</p>
+              filteredUsers.map((user) => {
+                const isTargetAdmin =
+                  user.role === "admin" || user.username === SAAS_CONFIG.adminUsername;
+                const isBlocked = user.subscription_status === "blocked";
+
+                return (
+                  <div
+                    key={user.id}
+                    className={`flex flex-wrap items-center justify-between gap-3 p-3.5 transition-colors ${
+                      isBlocked ? "bg-rose-500/5 hover:bg-rose-500/10" : "hover:bg-card/40"
+                    }`}
+                  >
+                    <div className="flex items-center gap-3">
+                      <Avatar
+                        className={`size-10 border ${
+                          isBlocked ? "border-rose-500/40 opacity-70" : "border-primary/30"
+                        }`}
+                      >
+                        <AvatarImage src={user.avatar_url ?? undefined} alt={user.display_name} />
+                        <AvatarFallback className="text-xs font-semibold">
+                          {user.display_name.slice(0, 2).toUpperCase()}
+                        </AvatarFallback>
+                      </Avatar>
+                      <div>
+                        <p className="text-sm font-semibold flex items-center gap-2">
+                          {user.display_name}
+                          {isTargetAdmin ? (
+                            <Badge className="bg-amber-500/20 text-amber-300 text-[10px] py-0 px-1.5">
+                              Admin
+                            </Badge>
+                          ) : isBlocked ? (
+                            <Badge className="bg-rose-500/20 text-rose-400 border border-rose-500/30 text-[10px] py-0 px-1.5">
+                              Bloqueado
+                            </Badge>
+                          ) : null}
+                        </p>
+                        <p className="text-xs text-muted-foreground font-mono">@{user.username}</p>
+                      </div>
+                    </div>
+
+                    <div className="flex flex-wrap items-center gap-2">
+                      {isBlocked ? (
+                        <Badge className="text-[11px] bg-rose-500/20 text-rose-400 border border-rose-500/30">
+                          🚫 Bloqueado
+                        </Badge>
+                      ) : (
+                        <Badge variant="outline" className="text-[11px] border-emerald-500/30 text-emerald-400">
+                          {user.plan?.toUpperCase() ?? "PRO"} • {SAAS_CONFIG.formattedPrice}/mês
+                        </Badge>
+                      )}
+
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        className="rounded-xl text-xs gap-1 border-primary/30 text-primary hover:bg-primary/10"
+                        onClick={() => {
+                          setUserToClone(user);
+                          setCloneModalOpen(true);
+                        }}
+                      >
+                        <Copy className="size-3 shrink-0" />
+                        Clonar
+                      </Button>
+
+                      {!isTargetAdmin ? (
+                        <>
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            className={
+                              isBlocked
+                                ? "rounded-xl text-xs gap-1 border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/10"
+                                : "rounded-xl text-xs gap-1 border-amber-500/30 text-amber-400 hover:bg-amber-500/10"
+                            }
+                            disabled={isBlockingId === user.user_id}
+                            onClick={() => handleToggleBlock(user)}
+                          >
+                            {isBlockingId === user.user_id ? (
+                              <Loader2 className="size-3 animate-spin" />
+                            ) : isBlocked ? (
+                              <CheckCircle2 className="size-3 shrink-0" />
+                            ) : (
+                              <Ban className="size-3 shrink-0" />
+                            )}
+                            {isBlocked ? "Desbloquear" : "Bloquear"}
+                          </Button>
+
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            className="rounded-xl text-xs gap-1 border-rose-500/30 text-rose-400 hover:bg-rose-500/10 hover:text-rose-300"
+                            onClick={() => setUserToDelete(user)}
+                          >
+                            <Trash2 className="size-3 shrink-0" />
+                            Excluir
+                          </Button>
+                        </>
+                      ) : null}
+
+                      <Button variant="ghost" size="sm" asChild className="rounded-xl text-xs">
+                        <RouterLink to="/$username" params={{ username: user.username }} target="_blank">
+                          <ExternalLink className="mr-1 size-3.5 shrink-0" />
+                          Ver Bio
+                        </RouterLink>
+                      </Button>
                     </div>
                   </div>
-
-                  <div className="flex flex-wrap items-center gap-2">
-                    <Badge variant="outline" className="text-[11px] border-emerald-500/30 text-emerald-400">
-                      {user.plan?.toUpperCase() ?? "PRO"} • {SAAS_CONFIG.formattedPrice}/mês
-                    </Badge>
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      className="rounded-xl text-xs gap-1 border-primary/30 text-primary hover:bg-primary/10"
-                      onClick={() => {
-                        setUserToClone(user);
-                        setCloneModalOpen(true);
-                      }}
-                    >
-                      <Copy className="size-3 shrink-0" />
-                      Clonar
-                    </Button>
-                    <Button variant="ghost" size="sm" asChild className="rounded-xl text-xs">
-                      <RouterLink to="/$username" params={{ username: user.username }} target="_blank">
-                        <ExternalLink className="mr-1 size-3.5 shrink-0" />
-                        Ver Bio
-                      </RouterLink>
-                    </Button>
-                  </div>
-                </div>
-              ))
+                );
+              })
             )}
           </div>
         </CardContent>
@@ -1391,6 +1530,56 @@ function SuperAdminTab() {
           void queryClient.invalidateQueries({ queryKey: ["admin-data"] });
         }}
       />
+
+      {/* Dialog de Confirmação de Exclusão */}
+      <AlertDialog
+        open={!!userToDelete}
+        onOpenChange={(open) => !open && !isDeleting && setUserToDelete(null)}
+      >
+        <AlertDialogContent className="glass border-glass-border">
+          <AlertDialogHeader>
+            <div className="flex items-center gap-2 text-rose-400">
+              <ShieldAlert className="size-5" />
+              <AlertDialogTitle>Excluir Conta de Usuário?</AlertDialogTitle>
+            </div>
+            <AlertDialogDescription className="text-xs text-muted-foreground space-y-2 pt-2 text-left">
+              <span>
+                Você está prestes a excluir permanentemente a conta de{" "}
+                <strong className="text-foreground">{userToDelete?.display_name}</strong> (
+                <span className="font-mono text-primary">@{userToDelete?.username}</span>).
+              </span>
+              <span className="block rounded-xl border border-rose-500/30 bg-rose-500/10 p-3 text-rose-300">
+                ⚠️ <strong>Atenção:</strong> Todos os links cadastrados, categorias criadas,
+                contadores de cliques e dados do perfil serão apagados definitivamente. Esta ação não
+                pode ser desfeita.
+              </span>
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel disabled={isDeleting} className="rounded-xl text-xs">
+              Cancelar
+            </AlertDialogCancel>
+            <AlertDialogAction
+              disabled={isDeleting}
+              onClick={(e) => {
+                e.preventDefault();
+                void handleDeleteUser();
+              }}
+              className="rounded-xl text-xs bg-destructive text-destructive-foreground hover:bg-destructive/90 font-semibold"
+            >
+              {isDeleting ? (
+                <>
+                  <Loader2 className="mr-1.5 size-3.5 animate-spin" /> Excluindo Conta...
+                </>
+              ) : (
+                <>
+                  <Trash2 className="mr-1.5 size-3.5" /> Sim, Excluir Definitivamente
+                </>
+              )}
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 }

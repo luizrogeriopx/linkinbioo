@@ -2,7 +2,7 @@ import { createFileRoute, Link as RouterLink, useParams } from "@tanstack/react-
 import { useQuery } from "@tanstack/react-query";
 import { useMemo, useState } from "react";
 import { motion } from "framer-motion";
-import { ArrowRight, Search, Sparkles, UserX, Zap } from "lucide-react";
+import { ArrowRight, Search, ShieldAlert, Sparkles, UserX, Zap } from "lucide-react";
 import {
   Accordion,
   AccordionContent,
@@ -123,6 +123,10 @@ function UserBioPage() {
 
   if (!profile) {
     return <UsernameNotFound username={username} />;
+  }
+
+  if (profile.subscription_status === "blocked") {
+    return <UserBlockedPage username={profile.username} displayName={profile.display_name} />;
   }
 
   return (
@@ -320,3 +324,30 @@ function UsernameNotFound({ username }: { username: string }) {
     </main>
   );
 }
+
+function UserBlockedPage({ username, displayName }: { username: string; displayName: string }) {
+  return (
+    <main className="mx-auto flex min-h-screen w-full max-w-md flex-col items-center justify-center px-4 py-12 text-center">
+      <div className="glass w-full rounded-3xl p-8 shadow-2xl border border-rose-500/30">
+        <div className="mx-auto flex size-16 items-center justify-center rounded-2xl bg-rose-500/10 text-rose-400">
+          <ShieldAlert className="size-8" />
+        </div>
+        <h1 className="mt-5 text-2xl font-bold text-foreground">Página Suspensa</h1>
+        <p className="mt-1 text-sm font-medium text-rose-400 font-mono">
+          @{username}
+        </p>
+        <p className="mt-3 text-sm text-muted-foreground">
+          A página de <span className="font-semibold text-foreground">{displayName}</span> foi temporariamente suspensa pela administração da plataforma.
+        </p>
+        <div className="mt-6 flex flex-col gap-3">
+          <Button asChild variant="outline" className="w-full rounded-xl">
+            <RouterLink to="/">
+              Ir para a Página Inicial
+            </RouterLink>
+          </Button>
+        </div>
+      </div>
+    </main>
+  );
+}
+
